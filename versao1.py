@@ -11,7 +11,6 @@ WIDTH = 480
 HEIGHT = 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Mario game')
-
 screen = pygame.display.set_mode((500, 500),0,32)
 font = pygame.font.SysFont(None, 20)
 
@@ -32,7 +31,6 @@ luigiesquerda_img = pygame.image.load('imagens\esquerda.jpg').convert_alpha()
 luigiesquerda_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
 luigidireita_img = pygame.image.load('imagens\direita.jpg').convert_alpha()
 luigidireita_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
-
 #tartaruga_img = pygame.image.load('').convert_alpha()
 
 game = True
