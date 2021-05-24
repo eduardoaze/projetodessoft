@@ -10,7 +10,7 @@ pygame.mixer.init()
 WIDTH = 480
 HEIGHT = 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('')
+pygame.display.set_caption('Mario game')
 screen = pygame.display.set_mode((500, 500),0,32)
 font = pygame.font.SysFont(None, 20)
 
@@ -32,3 +32,22 @@ luigiesquerda_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT
 luigidireita_img = pygame.image.load('imagens\direita.jpg').convert_alpha()
 luigidireita_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
 #tartaruga_img = pygame.image.load('').convert_alpha()
+
+game = True
+
+# ===== Loop principal =====
+while game:
+    # ----- Trata eventos
+    for event in pygame.event.get():
+        # ----- Verifica consequências
+        if event.type == pygame.QUIT:
+            game = False
+
+    # ----- Gera saídas
+    window.fill((255, 255, 255))  # Preenche com a cor branca
+
+    # ----- Atualiza estado do jogo
+    pygame.display.update()  # Mostra o novo frame para o jogador
+
+# ===== Finalização =====
+pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
