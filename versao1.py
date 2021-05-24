@@ -10,7 +10,7 @@ pygame.mixer.init()
 WIDTH = 480
 HEIGHT = 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Mario game')
+pygame.display.set_caption('Luigi Run')
 screen = pygame.display.set_mode((500, 500),0,32)
 font = pygame.font.SysFont(None, 20)
 
