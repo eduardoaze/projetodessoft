@@ -29,9 +29,9 @@ luigiparadopoder_img = pygame.image.load('imagens\paradopoder.jpg').convert_alph
 luigiparadopoder_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
 luigiesquerda_img = pygame.image.load('imagens\esquerda.jpg').convert_alpha()
 luigiesquerda_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
-luigidireita_img = pygame.image.load('imagens\direita.jpg').convert()
-luigidireita_img = pygame.image.load('imagens\direita.jpg').convert_alpha()
-luigidireita_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
+luigidireita_img = pygame.image.load('imagens\luigi2.png').convert()
+luigidireita_img = pygame.image.load('imagens\luigi2.png').convert_alpha()
+luigidireita_img = pygame.transform.scale(luigidireita_img, (luigi_WIDTH, luigi_HEIGHT))
 #tartaruga_img = pygame.image.load('').convert_alpha()
 
 game = True
