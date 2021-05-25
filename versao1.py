@@ -23,14 +23,14 @@ font = pygame.font.SysFont(None, 48)
 background = pygame.image.load('imagens\ofundo.jpg').convert()
 #obstaculo_img = pygame.image.load('').convert_alpha()
 #obstaculo_img = pygame.transform.scale(obstaculo_img, (obstaculo_WIDTH, obstaculo_HEIGHT))
-luigi_img = pygame.image.load('imagens\parado.jpg').convert_alpha()
+luigi_img = pygame.image.load('imagens\parado_direita.png').convert_alpha()
 luigi_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
-luigiparadopoder_img = pygame.image.load('imagens\paradopoder.jpg').convert_alpha()
-luigiparadopoder_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
-luigiesquerda_img = pygame.image.load('imagens\esquerda.jpg').convert_alpha()
-luigiesquerda_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
-luigidireita_img = pygame.image.load('imagens\luigi2.png').convert()
-luigidireita_img = pygame.image.load('imagens\luigi2.png').convert_alpha()
+# luigiparadopoder_img = pygame.image.load('imagens\paradopoder.jpg').convert_alpha()
+# luigiparadopoder_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
+# luigiesquerda_img = pygame.image.load('imagens\esquerda.jpg').convert_alpha()
+# luigiesquerda_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
+luigidireita_img = pygame.image.load('imagens\correndo_direita.png').convert()
+luigidireita_img = pygame.image.load('imagens\correndo_direita.png').convert_alpha()
 luigidireita_img = pygame.transform.scale(luigidireita_img, (luigi_WIDTH, luigi_HEIGHT))
 #tartaruga_img = pygame.image.load('').convert_alpha()
 
@@ -50,7 +50,8 @@ while game:
 
     # ----- Gera saídas
     window.fill((255,255,255))  # Preenche com a cor branca
-
+    window.blit(background,(0,0))
+    window.blit(luigidireita_img, (30,250))
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador
 
