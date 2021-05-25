@@ -34,26 +34,43 @@ luigidireita_img = pygame.image.load('imagens\correndo_direita.png').convert_alp
 luigidireita_img = pygame.transform.scale(luigidireita_img, (luigi_WIDTH, luigi_HEIGHT))
 #tartaruga_img = pygame.image.load('').convert_alpha()
 
-game = True
+class Luigi(pygame.sprite.Sprite):
+    def __init__(self, img):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = 10
+        self.rect.bottom = HEIGHT - 10
 
-luigi_xspeed = 3
+game = True
+# Variável para o ajuste de velocidade
+clock = pygame.time.Clock()
+FPS = 30
+#Criando os grupos
+all_sprites = pygame.sprite.Group()
+
+luigi = Luigi(luigidireita_img)
+all_sprites.add(luigi)
 
 text = font.render('Luigi Run', True, (0, 0, 255))
 # ===== Loop principal =====
 
 while game:
+    clock.tick(FPS)
     # ----- Trata eventos
     for event in pygame.event.get():
         # ----- Verifica consequências
         if event.type == pygame.QUIT:
             game = False
-
+    # ----- Atualiza estado do jogo
+    all_sprites.update()
     # ----- Gera saídas
     window.fill((255,255,255))  # Preenche com a cor branca
     window.blit(background,(0,0))
-    window.blit(luigidireita_img, (30,250))
-    # ----- Atualiza estado do jogo
-    pygame.display.update()  # Mostra o novo frame para o jogador
 
+
+    #Desenha o Luigi
+    all_sprites.draw(window)
+    pygame.display.update() # Mostra o novo frame para o jogador
 # ===== Finalização =====
 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
