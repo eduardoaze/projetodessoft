@@ -7,11 +7,11 @@ pygame.init()
 pygame.mixer.init()
 
 # ----- Gera tela principal
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 620
+HEIGHT = 310
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Luigi Run')
-screen = pygame.display.set_mode((500, 500),0,32)
+screen = pygame.display.set_mode((620, 310),0,32)
 font = pygame.font.SysFont(None, 20)
 
 # ----- Inicia assets
@@ -29,13 +29,18 @@ luigiparadopoder_img = pygame.image.load('imagens\paradopoder.jpg').convert_alph
 luigiparadopoder_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
 luigiesquerda_img = pygame.image.load('imagens\esquerda.jpg').convert_alpha()
 luigiesquerda_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
+luigidireita_img = pygame.image.load('imagens\direita.jpg').convert()
 luigidireita_img = pygame.image.load('imagens\direita.jpg').convert_alpha()
 luigidireita_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
 #tartaruga_img = pygame.image.load('').convert_alpha()
 
 game = True
 
+luigi_xspeed = 3
+
+text = font.render('Luigi Run', True, (0, 0, 255))
 # ===== Loop principal =====
+
 while game:
     # ----- Trata eventos
     for event in pygame.event.get():
@@ -44,7 +49,7 @@ while game:
             game = False
 
     # ----- Gera saídas
-    window.fill((255,0,255))  # Preenche com a cor branca
+    window.fill((255,255,255))  # Preenche com a cor branca
 
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador
