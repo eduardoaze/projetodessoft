@@ -12,7 +12,7 @@ HEIGHT = 310
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Luigi Run')
 screen = pygame.display.set_mode((620, 310),0,32)
-font = pygame.font.SysFont(None, 20)
+
 
 # ----- Inicia assets
 obstaculo_WIDTH = 50
@@ -32,12 +32,28 @@ luigi_img = pygame.transform.scale(luigi_img, (luigi_WIDTH, luigi_HEIGHT))
 luigidireita_img = pygame.image.load('imagens\correndo_direita.png').convert()
 luigidireita_img = pygame.image.load('imagens\correndo_direita.png').convert_alpha()
 luigidireita_img = pygame.transform.scale(luigidireita_img, (luigi_WIDTH, luigi_HEIGHT))
-#tartaruga_img = pygame.image.load('').convert_alpha()
+tartaruga_img = pygame.image.load('imagens/tartaruga_direita.png').convert_alpha()
+tartaruga_img = pygame.transform.scale(tartaruga_img, (50, 38))
 
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, img, bottom, centerx):
+        pygame.sprite.Sprite.__init__(self)
 
+        self.image = img
+        self.rect = self.image.get_rect()
+
+        self.rect.centerx = centerx + 15
+        self.rect.bottom = bottom + 30
+        self.speedx = 10
+
+    def update(self):
+        self.rect.x += self.speedx
+
+        if self.rect.right > WIDTH:
+            self.kill()
 
 class Luigi(pygame.sprite.Sprite):
-    def __init__(self, img):
+    def __init__(self, img, all_sprites, all_bullets, bullet_img):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
@@ -45,6 +61,9 @@ class Luigi(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
         self.speedy = 10
+        self.all_sprites = all_sprites
+        self.all_bullets = all_bullets
+        self.bullet_img = bullet_img
 
     def update(self):
         self.rect.x += self.speedx
@@ -60,17 +79,24 @@ class Luigi(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT - 10:
             self.rect.bottom = HEIGHT - 10
 
+    def shoot(self):
+        # A nova bala vai ser criada logo acima e no centro horizontal da nave
+        new_bullet = Bullet(self.bullet_img, self.rect.top, self.rect.centerx)
+        self.all_sprites.add(new_bullet)
+        self.all_bullets.add(new_bullet)
+
+
 game = True
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
 FPS = 30
 #Criando os grupos
 all_sprites = pygame.sprite.Group()
+all_bullets = pygame.sprite.Group()
 
-luigi = Luigi(luigidireita_img)
+luigi = Luigi(luigidireita_img, all_sprites, all_bullets, tartaruga_img)
 all_sprites.add(luigi)
 
-text = font.render('Luigi Run', True, (0, 0, 255))
 # ===== Loop principal =====
 
 while game:
@@ -90,6 +116,8 @@ while game:
                 luigi.speedx += 8
             if event.key == pygame.K_UP:
                 luigi.speedy -= 25
+            if event.key == pygame.K_SPACE:
+                luigi.shoot()
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
