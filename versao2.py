@@ -27,18 +27,27 @@ assets['luigi_img'] = pygame.transform.scale(assets['luigi_img'], (luigi_WIDTH, 
 assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert()
 assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert_alpha()
 assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], (luigi_WIDTH, luigi_HEIGHT))
+
+#Lista para a animação de andar para a esquerda
+
 luigi_esquerda_anim = []
 for i in range(3, 5):
     filename = 'imagens/luigi0{}.png'.format(i)
     img = pygame.image.load(filename).convert_alpha()
     img = pygame.transform.scale(img, (50,38))
     luigi_esquerda_anim.append(img)
+
+#Lista para a animação de andar para a direita e ficar parado
+
 luigi_direita_anim = []
 for i in range(0, 3):
     filename = 'imagens/luigi0{}.png'.format(i)
     img = pygame.image.load(filename).convert_alpha()
     img = pygame.transform.scale(img, (50,38))
     luigi_direita_anim.append(img)
+
+#Lista para a animação da tartaruga
+
 tartaruga_anim = []
 for i in range(1, 4):
     filename = 'imagens/tartaruga0{}.png'.format(i)
@@ -46,6 +55,8 @@ for i in range(1, 4):
     img = pygame.transform.scale(img, (50,38))
     tartaruga_anim.append(img)
 assets['tartaruga_anim'] = tartaruga_anim
+
+#Classe do tiro = tartaruga
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, assets, bottom, centerx):
@@ -56,7 +67,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.centerx = centerx + 15
-        self.rect.bottom = bottom + 30
+        self.rect.bottom = bottom + 45
         self.speedx = 10
         self.i = 0
 
@@ -73,6 +84,8 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.right > WIDTH:
             self.kill()
 
+#Classe do player = Luigi
+
 class Luigi(pygame.sprite.Sprite):
     def __init__(self, groups, assets):
         pygame.sprite.Sprite.__init__(self)
@@ -87,6 +100,8 @@ class Luigi(pygame.sprite.Sprite):
         self.i = 1
     def update(self):
         self.rect.x += self.speedx
+
+        #Fazendo as animações
         if self.speedx>0:
             if self.i>2:
                 self.i=1
