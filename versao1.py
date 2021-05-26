@@ -34,7 +34,6 @@ luigidireita_img = pygame.image.load('imagens/correndo_direita.png').convert_alp
 luigidireita_img = pygame.transform.scale(luigidireita_img, (luigi_WIDTH, luigi_HEIGHT))
 tartaruga_img = pygame.image.load('imagens/tartaruga_direita.png').convert_alpha()
 tartaruga_img = pygame.transform.scale(tartaruga_img, (50, 38))
-
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, img, bottom, centerx):
         pygame.sprite.Sprite.__init__(self)

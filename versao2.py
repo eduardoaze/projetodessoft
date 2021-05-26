@@ -59,7 +59,7 @@ assets['tartaruga_anim'] = tartaruga_anim
 #Classe do tiro = tartaruga
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, assets, bottom, centerx):
+    def __init__(self, assets, bottom, centerx, true_right):
         pygame.sprite.Sprite.__init__(self)
 
         tartaruga_anim = assets['tartaruga_anim']
@@ -68,7 +68,10 @@ class Bullet(pygame.sprite.Sprite):
 
         self.rect.centerx = centerx + 15
         self.rect.bottom = bottom + 45
-        self.speedx = 10
+        if true_right:
+            self.speedx = 15
+        else:
+            self.speedx = -15
         self.i = 0
 
     def update(self):
@@ -132,7 +135,8 @@ class Luigi(pygame.sprite.Sprite):
 
     def shoot(self):
         # A nova bala vai ser criada logo acima e no centro horizontal da nave
-        new_bullet = Bullet(self.assets, self.rect.top, self.rect.centerx)
+        true_right = self.speedx>=0
+        new_bullet = Bullet(self.assets, self.rect.top, self.rect.centerx, true_right)
         self.groups['all_sprites'].add(new_bullet)
         self.groups['all_bullets'].add(new_bullet)
 
