@@ -28,11 +28,11 @@ assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert()
 assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert_alpha()
 assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], (luigi_WIDTH, luigi_HEIGHT))
 luigi_esquerda_anim = []
-# for i in range(0, 3):
-#     filename = 'imagens/luigi0{}.png'.format(i)
-#     img = pygame.image.load(filename).convert_alpha()
-#     img = pygame.transform.scale(img, (50,38))
-#     luigi_esquerda_anim.append(img)
+for i in range(3, 5):
+    filename = 'imagens/luigi0{}.png'.format(i)
+    img = pygame.image.load(filename).convert_alpha()
+    img = pygame.transform.scale(img, (50,38))
+    luigi_esquerda_anim.append(img)
 luigi_direita_anim = []
 for i in range(0, 3):
     filename = 'imagens/luigi0{}.png'.format(i)
@@ -85,7 +85,6 @@ class Luigi(pygame.sprite.Sprite):
         self.groups = groups
         self.assets = assets
         self.i = 1
-
     def update(self):
         self.rect.x += self.speedx
         if self.speedx>0:
@@ -95,8 +94,13 @@ class Luigi(pygame.sprite.Sprite):
             else:
                 self.image = luigi_direita_anim[self.i]
                 self.i+=1
-        # elif self.speedx <0:
-
+        elif self.speedx <0:
+            if self.i>1:
+                self.i=0
+                self.image = luigi_esquerda_anim[self.i]
+            else:
+                self.image = luigi_esquerda_anim[self.i]
+                self.i+=1
         else:
             self.image = luigi_direita_anim[0]
         self.rect.y += self.speedy
