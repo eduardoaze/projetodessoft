@@ -21,11 +21,11 @@ luigi_WIDTH = 50
 luigi_HEIGHT = 38
 font = pygame.font.SysFont(None, 48)
 assets = {}
-assets['background'] = pygame.image.load('imagens\ofundo.jpg').convert()
-assets['luigi_img'] = pygame.image.load('imagens\parado_direita.png').convert_alpha()
+assets['background'] = pygame.image.load('imagens/ofundo.jpg').convert()
+assets['luigi_img'] = pygame.image.load('imagens/parado_direita.png').convert_alpha()
 assets['luigi_img'] = pygame.transform.scale(assets['luigi_img'], (luigi_WIDTH, luigi_HEIGHT))
-assets['luigidireita_img'] = pygame.image.load('imagens\correndo_direita.png').convert()
-assets['luigidireita_img'] = pygame.image.load('imagens\correndo_direita.png').convert_alpha()
+assets['luigidireita_img'] = pygame.image.load('imagens/correndo_direita.png').convert()
+assets['luigidireita_img'] = pygame.image.load('imagens/correndo_direita.png').convert_alpha()
 assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], (luigi_WIDTH, luigi_HEIGHT))
 tartaruga_anim = []
 for i in range(1, 4):
@@ -33,13 +33,13 @@ for i in range(1, 4):
     img = pygame.image.load(filename).convert()
     img = pygame.transform.scale(img, (50,38))
     tartaruga_anim.append(img)
-assets['tartaruga-anim'] = tartaruga_anim
+assets['tartaruga_anim'] = tartaruga_anim
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, img, bottom, centerx):
+    def __init__(self, assets, bottom, centerx):
         pygame.sprite.Sprite.__init__(self)
 
-        self.image = img
+        self.image = assets['tartaruga_anim']
         self.rect = self.image.get_rect()
 
         self.rect.centerx = centerx + 15
@@ -48,14 +48,14 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.x += self.speedx
-
+        
         if self.rect.right > WIDTH:
             self.kill()
 
 class Luigi(pygame.sprite.Sprite):
     def __init__(self, groups, assets):
         pygame.sprite.Sprite.__init__(self)
-        self.image = img
+        self.image = assets['luigidireita_img']
         self.rect = self.image.get_rect()
         self.rect.x = 10
         self.rect.bottom = HEIGHT - 10
@@ -91,7 +91,7 @@ class Explosion(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Armazena a animação de explosão
-        self.explosion_anim = assets['explosion_anim']
+        self.explosion_anim = assets['tartaruga_anim']
 
         # Inicia o processo de animação colocando a primeira imagem na tela.
         self.frame = 0  # Armazena o índice atual na animação
