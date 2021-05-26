@@ -115,7 +115,7 @@ while game:
             if event.key == pygame.K_RIGHT:
                 luigi.speedx += 8
             if event.key == pygame.K_UP:
-                luigi.speedy -= 25
+                luigi.speedy -= 17
             if event.key == pygame.K_SPACE:
                 luigi.shoot()
         # Verifica se soltou alguma tecla.
@@ -126,7 +126,7 @@ while game:
             if event.key == pygame.K_RIGHT:
                 luigi.speedx -= 8
             if event.key == pygame.K_UP:
-                luigi.speedy +=25
+                luigi.speedy +=17
 
     # ----- Atualiza estado do jogo
     all_sprites.update()
