@@ -28,7 +28,7 @@ assets['luigidireita_img'] = pygame.image.load('imagens\correndo_direita.png').c
 assets['luigidireita_img'] = pygame.image.load('imagens\correndo_direita.png').convert_alpha()
 assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], (luigi_WIDTH, luigi_HEIGHT))
 tartaruga_anim = []
-for i in range(4):
+for i in range(1, 4):
     filename = 'imagens/tartaruga0{}.png'.format(i)
     img = pygame.image.load(filename).convert()
     img = pygame.transform.scale(img, (50,38))
@@ -182,7 +182,7 @@ while game:
     all_sprites.update()
     # ----- Gera saídas
     window.fill((255,255,255))  # Preenche com a cor branca
-    window.blit(background,(0,0))
+    window.blit(assets['background'],(0,0))
 
 
     #Desenha o Luigi
