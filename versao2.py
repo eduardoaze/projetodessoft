@@ -30,7 +30,7 @@ assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], 
 tartaruga_anim = []
 for i in range(1, 4):
     filename = 'imagens/tartaruga0{}.png'.format(i)
-    img = pygame.image.load(filename).convert()
+    img = pygame.image.load(filename).convert_alpha()
     img = pygame.transform.scale(img, (50,38))
     tartaruga_anim.append(img)
 assets['tartaruga_anim'] = tartaruga_anim
@@ -39,15 +39,24 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, assets, bottom, centerx):
         pygame.sprite.Sprite.__init__(self)
 
-        self.image = assets['tartaruga_anim']
+        tartaruga_anim = assets['tartaruga_anim']
+        self.image = tartaruga_anim[0]
         self.rect = self.image.get_rect()
 
         self.rect.centerx = centerx + 15
         self.rect.bottom = bottom + 30
         self.speedx = 10
+        self.i = 0
 
     def update(self):
         self.rect.x += self.speedx
+        if self.i == 3:
+            self.i = 0
+            self.image = tartaruga_anim[self.i]
+        else:
+            self.image = tartaruga_anim[self.i]
+            self.i += 1
+
         
         if self.rect.right > WIDTH:
             self.kill()
