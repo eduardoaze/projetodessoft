@@ -22,11 +22,23 @@ luigi_HEIGHT = 38
 font = pygame.font.SysFont(None, 48)
 assets = {}
 assets['background'] = pygame.image.load('imagens/ofundo.jpg').convert()
-assets['luigi_img'] = pygame.image.load('imagens/parado_direita.png').convert_alpha()
+assets['luigi_img'] = pygame.image.load('imagens/luigi00.png').convert_alpha()
 assets['luigi_img'] = pygame.transform.scale(assets['luigi_img'], (luigi_WIDTH, luigi_HEIGHT))
-assets['luigidireita_img'] = pygame.image.load('imagens/correndo_direita.png').convert()
-assets['luigidireita_img'] = pygame.image.load('imagens/correndo_direita.png').convert_alpha()
+assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert()
+assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert_alpha()
 assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], (luigi_WIDTH, luigi_HEIGHT))
+luigi_esquerda_anim = []
+# for i in range(0, 3):
+#     filename = 'imagens/luigi0{}.png'.format(i)
+#     img = pygame.image.load(filename).convert_alpha()
+#     img = pygame.transform.scale(img, (50,38))
+#     luigi_esquerda_anim.append(img)
+luigi_direita_anim = []
+for i in range(0, 3):
+    filename = 'imagens/luigi0{}.png'.format(i)
+    img = pygame.image.load(filename).convert_alpha()
+    img = pygame.transform.scale(img, (50,38))
+    luigi_direita_anim.append(img)
 tartaruga_anim = []
 for i in range(1, 4):
     filename = 'imagens/tartaruga0{}.png'.format(i)
@@ -72,9 +84,21 @@ class Luigi(pygame.sprite.Sprite):
         self.speedy = 10
         self.groups = groups
         self.assets = assets
+        self.i = 1
 
     def update(self):
         self.rect.x += self.speedx
+        if self.speedx>0:
+            if self.i>2:
+                self.i=1
+                self.image = luigi_direita_anim[self.i]
+            else:
+                self.image = luigi_direita_anim[self.i]
+                self.i+=1
+        # elif self.speedx <0:
+
+        else:
+            self.image = luigi_direita_anim[0]
         self.rect.y += self.speedy
 
         #Matem na tela
