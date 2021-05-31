@@ -1,25 +1,22 @@
 #imports
-import pygame
+import pygame, sys
 import random
 import time
+from pygame.locals import *
 
-pygame.init()
-pygame.mixer.init()
+pygame.init ()
+pygame.display.set_caption ('game base')
+screen = pygame.display.set_mode((500, 500), 0, 32)
 
-# ----- Gera tela principal
-WIDTH = 620
-HEIGHT = 310
-window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Luigi Run')
-screen = pygame.display.set_mode((620, 310),0,32)
-
+font = pygame.font.SysFont (None, 20)
 
 # ----- Inicia assets
 obstaculo_WIDTH = 50
 obstaculo_HEIGHT = 38
 luigi_WIDTH = 50
 luigi_HEIGHT = 38
-font = pygame.font.SysFont(None, 48)
+
+
 assets = {}
 assets['background'] = pygame.image.load('imagens/ofundo.jpg').convert()
 assets['luigi_img'] = pygame.image.load('imagens/luigi00.png').convert_alpha()
@@ -176,58 +173,129 @@ class Luigi(pygame.sprite.Sprite):
         self.groups['all_sprites'].add(new_bullet)
         self.groups['all_bullets'].add(new_bullet)
 
-game = True
-# Variável para o ajuste de velocidade
-clock = pygame.time.Clock()
-FPS = 30
-#Criando os grupos
-all_sprites = pygame.sprite.Group()
-all_bullets = pygame.sprite.Group()
-groups = {}
-groups['all_sprites'] = all_sprites
-groups['all_bullets'] = all_bullets
-
-luigi = Luigi(groups, assets)
-all_sprites.add(luigi)
-
-# ===== Loop principal =====
-
-while game:
-    clock.tick(FPS)
-
-    # ----- Trata eventos
-    for event in pygame.event.get():
-        # ----- Verifica consequências
-        if event.type == pygame.QUIT:
-            game = False
-        # Verifica se apertou alguma tecla.
-        if event.type == pygame.KEYDOWN:
-            # Dependendo da tecla, altera a velocidade.
-            if event.key == pygame.K_LEFT:
-                luigi.speedx -= 8
-            if event.key == pygame.K_RIGHT:
-                luigi.speedx += 8
-            if event.key == pygame.K_UP:
-                luigi.jump()
-            if event.key == pygame.K_SPACE:
-                luigi.shoot()
-        # Verifica se soltou alguma tecla.
-        if event.type == pygame.KEYUP:
-            # Dependendo da tecla, altera a velocidade.
-            if event.key == pygame.K_LEFT:
-                luigi.speedx += 8
-            if event.key == pygame.K_RIGHT:
-                luigi.speedx -= 8
-
-    # ----- Atualiza estado do jogo
-    all_sprites.update()
-    # ----- Gera saídas
-    window.fill((255,255,255))  # Preenche com a cor branca
-    window.blit(assets['background'],(0,0))
+mainclock = pygame.time.Clock()
 
 
-    #Desenha o Luigi
-    all_sprites.draw(window)
-    pygame.display.update() # Mostra o novo frame para o jogador
+def draw_text (text, font, color, surface, x, y):
+    textobj = font.render (text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x,y)
+    surface.blit (textobj, textrect)
+
+click = False
+
+def main_menu ():
+    while True:
+        screen.fill ((0,0,0))
+        draw_text ('Luigi run', font, (255, 255, 255), screen, 20, 20)
+        
+        mx, my = pygame.mouse.get_pos()
+        
+        button_1 = pygame.Rect (50, 100, 200, 50)
+        button_2 = pygame.Rect (50, 200, 200, 50)
+        if button_1.collidepoint (mx,my):
+            if click:
+                game()
+        if button_2.collidepoint (mx,my):
+            if click :
+                options()
+        pygame.draw.rect(screen, (255,0,0), button_1)
+        pygame.draw.rect(screen, (255,0,0), button_2)
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+        pygame.display.update()
+        mainclock.tick (60)
+
+def game ():
+    game = True
+
+    while game:
+        clock.tick(FPS)
+
+        # ----- Trata eventos
+        for event in pygame.event.get():
+            # ----- Verifica consequências
+            if event.type == pygame.QUIT:
+                game = False
+            # Verifica se apertou alguma tecla.
+            if event.type == pygame.KEYDOWN:
+                # Dependendo da tecla, altera a velocidade.
+                if event.key == pygame.K_LEFT:
+                    luigi.speedx -= 8
+                if event.key == pygame.K_RIGHT:
+                    luigi.speedx += 8
+                if event.key == pygame.K_UP:
+                    luigi.jump()
+                if event.key == pygame.K_SPACE:
+                    luigi.shoot()
+            # Verifica se soltou alguma tecla.
+            if event.type == pygame.KEYUP:
+                # Dependendo da tecla, altera a velocidade.
+                if event.key == pygame.K_LEFT:
+                    luigi.speedx += 8
+                if event.key == pygame.K_RIGHT:
+                    luigi.speedx -= 8
+
+        # ----- Atualiza estado do jogo
+        all_sprites.update()
+        # ----- Gera saídas
+        window.fill((255,255,255))  # Preenche com a cor branca
+        window.blit(assets['background'],(0,0))
+
+
+        #Desenha o Luigi
+        all_sprites.draw(window)
+        pygame.display.update() # Mostra o novo frame para o jogador
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    running = False
+        pygame.display.update()
+        mainclock.tick (60)
+
+def options ():
+    running = True
+    while running:
+        screen.fill ((0,0,0))
+
+        draw_text ('options', font, (255, 255, 255), screen, 20, 20)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    running = False
+        pygame.display.update()
+        mainclock.tick (60)
+        
+
+
+
+main_menu ()  
+
+
 # ===== Finalização =====
 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
