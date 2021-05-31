@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+from teladeinicio import teladeinicio
 
 pygame.init()
 pygame.mixer.init()

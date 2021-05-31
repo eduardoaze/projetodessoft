@@ -52,6 +52,8 @@ def main_menu ():
 def game ():
     running = True
     while running:
+        screen.fill ((0,0,0))
+
         draw_text ('game', font, (255, 255, 255), screen, 20, 20)
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -70,6 +72,8 @@ def game ():
 def options ():
     running = True
     while running:
+        screen.fill ((0,0,0))
+
         draw_text ('options', font, (255, 255, 255), screen, 20, 20)
         for event in pygame.event.get():
             if event.type == QUIT:
