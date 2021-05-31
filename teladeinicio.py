@@ -4,8 +4,9 @@ mainclock = pygame.time.Clock()
 from pygame.locals import *
 pygame.init ()
 pygame.display.set_caption ('game base')
-screen = pygame.display.set_mode((500, 500), 0, 32)
-
+screen = pygame.display.set_mode((500, 400), 0, 32)
+assets = {}
+assets['inicio'] = pygame.image.load('imagens/inicio.jpg').convert()
 font = pygame.font.SysFont (None, 20)
 
 def draw_text (text, font, color, surface, x, y):
@@ -18,7 +19,7 @@ click = False
 
 def main_menu ():
     while True:
-        screen.fill ((0,0,0))
+        screen.blit(assets['inicio'],(0,0))
         draw_text ('Luigi run', font, (255, 255, 255), screen, 20, 20)
         
         mx, my = pygame.mouse.get_pos()
