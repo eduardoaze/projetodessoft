@@ -56,6 +56,14 @@ for i in range(1, 4):
     tartaruga_anim.append(img)
 assets['tartaruga_anim'] = tartaruga_anim
 
+#Variáveis para a função pulo:
+GRAVITY = 2
+JUMP_SIZE = 20
+GROUND = HEIGHT - 10
+#Define os estados do jogador
+STILL = 0
+JUMPING = 1
+FALLING = 2
 #Classe do tiro = tartaruga
 
 class Bullet(pygame.sprite.Sprite):
@@ -97,12 +105,26 @@ class Luigi(pygame.sprite.Sprite):
         self.rect.x = 10
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
-        self.speedy = 10
+        self.speedy = 0
         self.groups = groups
         self.assets = assets
         self.i = 1
+
     def update(self):
         self.rect.x += self.speedx
+        self.speedy += GRAVITY
+
+        if self.speedy > 0:
+            self.state = FALLING
+        self.rect.y += self.speedy
+        # Se bater no chão, para de cair
+        if self.rect.bottom > GROUND:
+            # Reposiciona para a posição do chão
+            self.rect.bottom = GROUND
+            # Para de cair
+            self.speedy = 0
+            # Atualiza o estado para parado
+            self.state = STILL
 
         #Fazendo as animações
         if self.speedx>0:
@@ -121,7 +143,6 @@ class Luigi(pygame.sprite.Sprite):
                 self.i+=1
         else:
             self.image = luigi_direita_anim[0]
-        self.rect.y += self.speedy
 
         #Matem na tela
         if self.rect.right > WIDTH:
@@ -132,6 +153,11 @@ class Luigi(pygame.sprite.Sprite):
             self.rect.top = 175
         if self.rect.bottom > HEIGHT - 10:
             self.rect.bottom = HEIGHT - 10
+
+    def jump(self):
+        if self.state == STILL:
+            self.speedy -= JUMP_SIZE
+            self.state = JUMPING
 
     def shoot(self):
         # A nova bala vai ser criada logo acima e no centro horizontal da nave
@@ -172,7 +198,7 @@ while game:
             if event.key == pygame.K_RIGHT:
                 luigi.speedx += 8
             if event.key == pygame.K_UP:
-                luigi.speedy -= 25
+                luigi.jump()
             if event.key == pygame.K_SPACE:
                 luigi.shoot()
         # Verifica se soltou alguma tecla.
@@ -182,8 +208,6 @@ while game:
                 luigi.speedx += 8
             if event.key == pygame.K_RIGHT:
                 luigi.speedx -= 8
-            if event.key == pygame.K_UP:
-                luigi.speedy +=25
 
     # ----- Atualiza estado do jogo
     all_sprites.update()
