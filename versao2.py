@@ -27,6 +27,10 @@ assets['luigi_img'] = pygame.transform.scale(assets['luigi_img'], (luigi_WIDTH, 
 assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert()
 assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert_alpha()
 assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], (luigi_WIDTH, luigi_HEIGHT))
+assets['luigi_pulando_direita'] = pygame.image.load('imagens\luigi_voando.png').convert_alpha()
+assets['luigi_pulando_direita'] = pygame.transform.scale(assets['luigi_pulando_direita'], (luigi_WIDTH, luigi_HEIGHT))
+assets['luigi_pulando_esquerda'] = pygame.image.load('imagens\luigi_voando2.png').convert_alpha()
+assets['luigi_pulando_esquerda'] = pygame.transform.scale(assets['luigi_pulando_esquerda'], (luigi_WIDTH+13, luigi_HEIGHT+13)) #As imagens não estavam do mesmo tamanho
 
 #Lista para a animação de andar para a esquerda
 
@@ -128,19 +132,25 @@ class Luigi(pygame.sprite.Sprite):
 
         #Fazendo as animações
         if self.speedx>0:
-            if self.i>2:
-                self.i=1
-                self.image = luigi_direita_anim[self.i]
+            if self.state == STILL:
+                if self.i>2:
+                    self.i=1
+                    self.image = luigi_direita_anim[self.i]
+                else:
+                    self.image = luigi_direita_anim[self.i]
+                    self.i+=1
             else:
-                self.image = luigi_direita_anim[self.i]
-                self.i+=1
+                self.image = assets['luigi_pulando_direita']
         elif self.speedx <0:
-            if self.i>1:
-                self.i=0
-                self.image = luigi_esquerda_anim[self.i]
+            if self.state == STILL:
+                if self.i>1:
+                    self.i=0
+                    self.image = luigi_esquerda_anim[self.i]
+                else:
+                    self.image = luigi_esquerda_anim[self.i]
+                    self.i+=1
             else:
-                self.image = luigi_esquerda_anim[self.i]
-                self.i+=1
+                self.image = assets['luigi_pulando_esquerda']
         else:
             self.image = luigi_direita_anim[0]
 
