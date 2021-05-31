@@ -1,40 +1,91 @@
-import pygame
-import random
-from os import path
+import pygame, sys
 
-from config import IMG_DIR, BLACK, FPS, GAME, QUIT
+mainclock = pygame.time.Clock()
+from pygame.locals import *
+pygame.init ()
+pygame.display.set_caption ('game base')
+screen = pygame.display.set_mode((500, 500), 0, 32)
 
+font = pygame.font.SysFont (None, 20)
 
-def teladeinicio(screen):
-    # Variável para o ajuste de velocidade
-    clock = pygame.time.Clock()
+def draw_text (text, font, color, surface, x, y):
+    textobj = font.render (text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x,y)
+    surface.blit (textobj, textrect)
 
-    # Carrega o fundo da tela inicial
-    background = pygame.image.load(path.join(IMG_DIR, 'inicio.jpg'))#.convert()
-    background_rect = background.get_rect()
+click = False
 
+def main_menu ():
+    while True:
+        screen.fill ((0,0,0))
+        draw_text ('Luigi run', font, (255, 255, 255), screen, 20, 20)
+        
+        mx, my = pygame.mouse.get_pos()
+        
+        button_1 = pygame.Rect (50, 100, 200, 50)
+        button_2 = pygame.Rect (50, 200, 200, 50)
+        if button_1.collidepoint (mx,my):
+            if click:
+                game()
+        if button_2.collidepoint (mx,my):
+            if click :
+                options()
+        pygame.draw.rect(screen, (255,0,0), button_1)
+        pygame.draw.rect(screen, (255,0,0), button_2)
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+        pygame.display.update()
+        mainclock.tick (60)
+
+def game ():
     running = True
     while running:
-
-        # Ajusta a velocidade do jogo.
-        clock.tick(FPS)
-
-        # Processa os eventos (mouse, teclado, botão, etc).
+        draw_text ('game', font, (255, 255, 255), screen, 20, 20)
         for event in pygame.event.get():
-            # Verifica se foi fechado.
-            if event.type == pygame.QUIT:
-                state = QUIT
-                running = False
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    running = False
+        pygame.display.update()
+        mainclock.tick (60)
 
-            if event.type == pygame.KEYUP:
-                state = GAME
-                running = False
+def options ():
+    running = True
+    while running:
+        draw_text ('options', font, (255, 255, 255), screen, 20, 20)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    running = False
+        pygame.display.update()
+        mainclock.tick (60)
+        
 
-        # A cada loop, redesenha o fundo e os sprites
-        screen.fill(BLACK)
-        screen.blit(background, background_rect)
 
-        # Depois de desenhar tudo, inverte o display.
-        pygame.display.flip()
 
-    return state
+main_menu ()              
