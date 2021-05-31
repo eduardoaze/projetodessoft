@@ -33,7 +33,6 @@ assets['luigi_pulando_esquerda'] = pygame.image.load('imagens\luigi_voando2.png'
 assets['luigi_pulando_esquerda'] = pygame.transform.scale(assets['luigi_pulando_esquerda'], (luigi_WIDTH+13, luigi_HEIGHT+13)) #As imagens não estavam do mesmo tamanho
 
 #Lista para a animação de andar para a esquerda
-
 luigi_esquerda_anim = []
 for i in range(3, 5):
     filename = 'imagens/luigi0{}.png'.format(i)
