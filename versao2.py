@@ -343,15 +343,24 @@ while state != DONE:
     all_sprites.draw(window)
 
     # Desenhando o score
-    text_surface = assets['score_font'].render("{:08d}".format(score), True, (255, 255, 0))
+    text_surface = assets['score_font'].render("{:03d}".format(score), True, (255, 255, 0))
     text_rect = text_surface.get_rect()
     text_rect.midtop = (WIDTH / 2,  10)
     window.blit(text_surface, text_rect)
+ 
+    assets['vidas'] = pygame.image.load('imagens/vidas.png').convert_alpha()
+    assets['vidas'] = pygame.transform.scale(assets['vidas'], (25, 20))
+    for a in range (0, lives):
+        img = assets['vidas']
+        img_rect = img.get_rect()
+        img_rect.bottomleft = (10 + 25*a, HEIGHT - 10)
+        window.blit(img, img_rect)
 
-    text_surface = assets['score_font'].render(chr(2) * lives, True, (255, 0, 0))
-    text_rect = text_surface.get_rect()
-    text_rect.bottomleft = (10, HEIGHT - 10)
-    window.blit(text_surface, text_rect)
+    
+    # text_surface = assets['score_font'].render(chr(2) * lives, True, (255, 0, 0))
+    # text_rect = text_surface.get_rect()
+    # text_rect.bottomleft = (10, HEIGHT - 10)
+    # window.blit(text_surface, text_rect)
 
 
     pygame.display.update() # Mostra o novo frame para o jogador
