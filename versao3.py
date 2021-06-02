@@ -28,9 +28,9 @@ assets['luigi_img'] = pygame.transform.scale(assets['luigi_img'], (luigi_WIDTH, 
 assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert()
 assets['luigidireita_img'] = pygame.image.load('imagens/luigi02.png').convert_alpha()
 assets['luigidireita_img'] = pygame.transform.scale(assets['luigidireita_img'], (luigi_WIDTH, luigi_HEIGHT))
-assets['luigi_pulando_direita'] = pygame.image.load('imagens\luigi_voando.png').convert_alpha()
+assets['luigi_pulando_direita'] = pygame.image.load('imagens/luigi_voando.png').convert_alpha()
 assets['luigi_pulando_direita'] = pygame.transform.scale(assets['luigi_pulando_direita'], (luigi_WIDTH, luigi_HEIGHT))
-assets['luigi_pulando_esquerda'] = pygame.image.load('imagens\luigi_voando2.png').convert_alpha()
+assets['luigi_pulando_esquerda'] = pygame.image.load('imagens/luigi_voando2.png').convert_alpha()
 assets['luigi_pulando_esquerda'] = pygame.transform.scale(assets['luigi_pulando_esquerda'], (luigi_WIDTH+13, luigi_HEIGHT+13)) #As imagens não estavam do mesmo tamanho
 
 def draw_text (text, font, color, surface, x, y):

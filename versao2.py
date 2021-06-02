@@ -31,6 +31,14 @@ assets['luigi_pulando_direita'] = pygame.image.load('imagens\luigi_voando.png').
 assets['luigi_pulando_direita'] = pygame.transform.scale(assets['luigi_pulando_direita'], (luigi_WIDTH, luigi_HEIGHT))
 assets['luigi_pulando_esquerda'] = pygame.image.load('imagens\luigi_voando2.png').convert_alpha()
 assets['luigi_pulando_esquerda'] = pygame.transform.scale(assets['luigi_pulando_esquerda'], (luigi_WIDTH+13, luigi_HEIGHT+13)) #As imagens não estavam do mesmo tamanho
+#Lista animação bixo
+bixo = []
+for i in range(0,2):
+    filename = 'imagens/bixo0{}.png'.format(i)
+    img = pygame.image.load(filename).convert_alpha()
+    img = pygame.transform.scale(img, (50,38))
+    bixo.append(img)
+assets['bixo'] = bixo
 
 #Lista para a animação de andar para a esquerda
 luigi_esquerda_anim = []
@@ -68,6 +76,44 @@ STILL = 0
 JUMPING = 1
 FALLING = 2
 #Classe do tiro = tartaruga
+
+class Meteor(pygame.sprite.Sprite):
+    def __init__(self, assets):
+        # Construtor da classe mãe (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+
+        bixo = assets['bixo']
+        self.image = bixo[1]
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(630, 670)
+        self.rect.y = random.randint(200, 270)
+        self.speedx = random.randint(-7, -5)
+        self.speedy = 3
+        self.assets = assets
+        self.i = 0
+
+    def update(self):
+        # Atualizando a posição do meteoro
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+
+        if self.rect.top > 270:
+            self.speedy = random.randint(-3, -1)
+        elif self.rect.bottom < 200:
+            self.speedy = random.randint(1, 3) 
+        # Se o meteoro passar do final da tela, volta para cima e sorteia
+        if self.i == 2:
+            self.i = 0
+            self.image = bixo[self.i]
+        else:
+            self.image = bixo[self.i]
+            self.i += 1
+        # novas posições e velocidades
+        if  self.rect.right < 0:
+            self.rect.x = random.randint(630, 670)
+            self.rect.y = random.randint(200, 270)
+            self.speedx = random.randint(-7, -5)
+            
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, assets, bottom, centerx, true_right):
@@ -180,11 +226,18 @@ game = True
 clock = pygame.time.Clock()
 FPS = 30
 #Criando os grupos
+all_bixos = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_bullets = pygame.sprite.Group()
 groups = {}
 groups['all_sprites'] = all_sprites
 groups['all_bullets'] = all_bullets
+groups['all_bixos'] = all_bixos
+for i in range(3):
+    inimigo = Meteor(assets)
+    all_sprites.add(inimigo)
+    all_bixos.add(inimigo)
+
 
 luigi = Luigi(groups, assets)
 all_sprites.add(luigi)
@@ -220,6 +273,15 @@ while game:
 
     # ----- Atualiza estado do jogo
     all_sprites.update()
+
+    #Verifica se houve colisão entre a tartaruga e os bixos
+    hits = pygame.sprite.groupcollide(all_bixos, all_bullets, True, True)
+    for meteor in hits: # As chaves são os elementos do primeiro grupo (meteoros) que colidiram com alguma bala
+        # O meteoro e destruido e precisa ser recriado
+        m = Meteor(assets)
+        all_sprites.add(m)
+        all_bixos.add(m)
+
     # ----- Gera saídas
     window.fill((255,255,255))  # Preenche com a cor branca
     window.blit(assets['background'],(0,0))
