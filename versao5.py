@@ -96,7 +96,7 @@ class Meteor(pygame.sprite.Sprite):
         self.rect.x = random.randint(630, 670)
         self.rect.y = random.randint(200, 270)
         self.speedx = random.randint(-7, -5)
-        self.speedy = 3
+        self.speedy = random.randint(-3, 3)
         self.assets = assets
         self.i = 0
 
@@ -121,6 +121,7 @@ class Meteor(pygame.sprite.Sprite):
             self.rect.x = random.randint(630, 670)
             self.rect.y = random.randint(200, 270)
             self.speedx = random.randint(-7, -5)
+            self.speedy = random.randint(-3, 3)
             
 
 class Bullet(pygame.sprite.Sprite):
@@ -248,6 +249,7 @@ DONE = 3
 PLAYING = 4
 state = PLAYING
 
+BIXOS = 3
 score = 0
 lives = 3
 keys_down = {}
@@ -318,11 +320,13 @@ while state != DONE:
             assets['morre'].play()
  
             score+=100
-            if score % 500 == 0:
+            if score % 1000 == 0:
                     lives += 1
-                    m = Meteor(assets)
-                    all_sprites.add(m)
-                    all_bixos.add(m)
+                    if BIXOS<5:
+                        BIXOS+=1
+                        m = Meteor(assets)
+                        all_sprites.add(m)
+                        all_bixos.add(m)
         
         # Verifica colisão com o personage 
         hits = pygame.sprite.spritecollide(luigi, all_bixos, True)
@@ -335,12 +339,11 @@ while state != DONE:
                 # assets['morre'].play()
                 luigi.kill()
                 keys_down = {}
-                if score < 500:
-                    score = 0
-                else:
-                    score -= 500
                 luigi = Luigi(groups, assets)
                 all_sprites.add(luigi)
+                m = Meteor(assets)
+                all_sprites.add(m)
+                all_bixos.add(m) 
                 
             
         
@@ -367,11 +370,6 @@ while state != DONE:
         window.blit(img, img_rect)
 
     
-    # text_surface = assets['score_font'].render(chr(2) * lives, True, (255, 0, 0))
-    # text_rect = text_surface.get_rect()
-    # text_rect.bottomleft = (10, HEIGHT - 10)
-    # window.blit(text_surface, text_rect)
-
 
     pygame.display.update() # Mostra o novo frame para o jogador
 # ===== Finalização =====
