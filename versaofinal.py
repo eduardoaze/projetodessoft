@@ -26,9 +26,10 @@ luigi_WIDTH = 50
 luigi_HEIGHT = 38
 font = pygame.font.SysFont(None, 48)
 # Carrega os sons do jogo
-pygame.mixer.music.load('sons\BL.mp3')
+pygame.mixer.music.load('sons\musicaprincipal.wav')
 pygame.mixer.music.set_volume(0.2)
 assets = {}
+assets['menu'] = pygame.mixer.Sound('sons\menu.wav')
 assets['fim'] = pygame.mixer.Sound('sons\Super Mario Dies Sound Effect.wav')
 assets['morre'] = pygame.mixer.Sound('sons\Splat - Gaming Sound Effect (HD).wav')
 assets['pulo'] = pygame.mixer.Sound('sons\Mario Jump - Gaming Sound Effect (HD).wav')
@@ -56,7 +57,7 @@ def draw_text (text, font, color, surface, x, y):
     textrect = textobj.get_rect()
     textrect.topleft = (x,y)
     surface.blit (textobj, textrect)
-
+assets['menu'].play()
 click = False
 jogando = True
 def main_menu ():
@@ -348,11 +349,13 @@ def game ():
     pygame.mixer.music.play(loops=-1)
     while state != DONE:
         clock.tick(FPS)
+        assets['menu'].stop()
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 state = DONE
+                pygame.mixer.music.stop()
             # Verifica se apertou alguma tecla.
             if state == PLAYING:
                 if event.type == pygame.KEYDOWN:
