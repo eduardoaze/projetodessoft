@@ -111,7 +111,6 @@ def gameover ():
                 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
     if continuar.collidepoint (mx,my):
         if click:
-                decidindo = False
                 game()
                     
 #codigo do jogo
