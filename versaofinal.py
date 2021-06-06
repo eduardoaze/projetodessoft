@@ -165,7 +165,7 @@ def game ():
             self.rect.x = random.randint(630, 670)
             self.rect.y = random.randint(200, 270)
             self.speedx = random.randint(-7, -5)
-            self.speedy = 3
+            self.speedy = random.randint(-3, 3)
             self.assets = assets
             self.i = 0
 
@@ -190,6 +190,7 @@ def game ():
                 self.rect.x = random.randint(630, 670)
                 self.rect.y = random.randint(200, 270)
                 self.speedx = random.randint(-7, -5)
+                self.speedy = random.randint(-3, 3)
                 
 
     class Bullet(pygame.sprite.Sprite):
@@ -317,6 +318,7 @@ def game ():
     PLAYING = 4
     state = PLAYING
 
+    BIXOS = 3
     score = 0
     lives = 3
     keys_down = {}
@@ -387,8 +389,10 @@ def game ():
                 assets['morre'].play()
     
                 score+=100
-                if score % 500 == 0:
-                        lives += 1
+                if score % 1000 == 0:
+                    lives += 1
+                    if BIXOS<4:
+                        BIXOS+=1
                         m = Meteor(assets)
                         all_sprites.add(m)
                         all_bixos.add(m)
@@ -398,18 +402,19 @@ def game ():
             if len(hits) > 0:
                 if lives==1:
                     assets['fim'].play()
+                    pygame.mixer.music.stop()
                     state = DONE
                 else:
                     lives-=1
                     # assets['morre'].play()
                     luigi.kill()
                     keys_down = {}
-                    if score < 500:
-                        score = 0
-                    else:
-                        score -= 500
-                    luigi = Luigi(groups, assets)
+                    luigi = Luigi(groups, assets) 
                     all_sprites.add(luigi)
+                    m = Meteor(assets)
+                    all_sprites.add(m)
+                    all_bixos.add(m) 
+                        
                     
                 
             
