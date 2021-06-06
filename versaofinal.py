@@ -76,7 +76,8 @@ def main_menu ():
                 options()
         pygame.draw.rect(screen, (50,205,10), button_1)
         pygame.draw.rect(screen, (50,205,10), button_2)
-        #draw_text('PLAY!',font,(255,255,255),,100,25)
+        draw_text('PLAY!',font,(255,255,255),screen,75,60)
+        draw_text('OPTIONS',font,(255,255,255),screen,420,60)
 
         click = False
         for event in pygame.event.get():
