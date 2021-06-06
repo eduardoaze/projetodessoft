@@ -29,6 +29,8 @@ font = pygame.font.SysFont(None, 48)
 pygame.mixer.music.load('sons\musicaprincipal.wav')
 pygame.mixer.music.set_volume(0.2)
 assets = {}
+assets['vida_perde'] = pygame.mixer.Sound('sons/Nope (Construction Worker TF2) - Gaming Sound Effect (HD) (1).wav')
+assets['vida_ganha'] = pygame.mixer.Sound('sons/Mario Coin Sound - Sound Effect (HD).wav')
 assets['menu'] = pygame.mixer.Sound('sons\menu.wav')
 assets['fim'] = pygame.mixer.Sound('sons\Super Mario Dies Sound Effect.wav')
 assets['morre'] = pygame.mixer.Sound('sons\Splat - Gaming Sound Effect (HD).wav')
@@ -394,6 +396,7 @@ def game ():
                 score+=100
                 if score % 1000 == 0:
                     lives += 1
+                    assets['vida_ganha'].play()
                     if BIXOS<4:
                         BIXOS+=1
                         m = Meteor(assets)
@@ -409,6 +412,7 @@ def game ():
                     state = DONE
                 else:
                     lives-=1
+                    assets['vida_perde'].play()
                     # assets['morre'].play()
                     luigi.kill()
                     keys_down = {}
