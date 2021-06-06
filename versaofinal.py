@@ -96,24 +96,23 @@ def options():
     screen.fill ((0,0,0))
 
 def gameover ():
-    decidindo = True
-    while decidindo:
-        screen.fill ((0,0,0))
+    
+    screen.fill ((0,0,0))
 
-        mx, my = pygame.mouse.get_pos()
-        acabou = pygame.Rect (20, 50, 200, 50)
-        continuar = pygame.Rect (200, 50, 200, 50)
-        pygame.draw.rect(screen, (50,205,10), button_1)
-        pygame.draw.rect(screen, (50,205,10), button_2)
-            
+    mx, my = pygame.mouse.get_pos()
+    acabou = pygame.Rect (20, 50, 200, 50)
+    continuar = pygame.Rect (200, 50, 200, 50)
+    pygame.draw.rect(screen, (50,205,10), acabou)
+    pygame.draw.rect(screen, (50,205,10), continuar)
+        
 
-        if acabou.collidepoint (mx,my):
-            if click:
-                    pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
-        if continuar.collidepoint (mx,my):
-            if click:
-                    decidindo = False
-                    game()
+    if acabou.collidepoint (mx,my):
+        if click:
+                pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
+    if continuar.collidepoint (mx,my):
+        if click:
+                decidindo = False
+                game()
                     
 #codigo do jogo
 def game ():
@@ -445,7 +444,6 @@ def game ():
 
         pygame.display.update() # Mostra o novo frame para o jogador
     # ===== Finalização =====
-    jogando = False
     gameover()
     #pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
 
