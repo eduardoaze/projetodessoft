@@ -66,6 +66,7 @@ for i in range(1, 4):
     img = pygame.transform.scale(img, (50,38))
     tartaruga_anim.append(img)
 assets['tartaruga_anim'] = tartaruga_anim
+assets["score_font"] = font
 
 #Variáveis para a função pulo:
 GRAVITY = 2
@@ -75,6 +76,7 @@ GROUND = HEIGHT - 10
 STILL = 0
 JUMPING = 1
 FALLING = 2
+
 #Classe do tiro = tartaruga
 
 class Meteor(pygame.sprite.Sprite):
@@ -159,6 +161,10 @@ class Luigi(pygame.sprite.Sprite):
         self.assets = assets
         self.i = 1
 
+        #Limita o numero de tiros
+        self.last_shot = pygame.time.get_ticks()
+        self.shoot_ticks = 500
+
     def update(self):
         self.rect.x += self.speedx
         self.speedy += GRAVITY
@@ -217,11 +223,28 @@ class Luigi(pygame.sprite.Sprite):
     def shoot(self):
         # A nova bala vai ser criada logo acima e no centro horizontal da nave
         true_right = self.speedx>=0
-        new_bullet = Bullet(self.assets, self.rect.top, self.rect.centerx, true_right)
-        self.groups['all_sprites'].add(new_bullet)
-        self.groups['all_bullets'].add(new_bullet)
+                # Verifica se pode atirar
+        now = pygame.time.get_ticks()
+        # Verifica quantos ticks se passaram desde o último tiro.
+        elapsed_ticks = now - self.last_shot
 
-game = True
+        # Se já pode atirar novamente...
+        if elapsed_ticks > self.shoot_ticks:
+            # Marca o tick da nova imagem.
+            self.last_shot = now
+            #Posiciona a bala no chão
+            new_bullet = Bullet(self.assets, self.rect.top, self.rect.centerx, true_right)
+            self.groups['all_sprites'].add(new_bullet)
+            self.groups['all_bullets'].add(new_bullet) 
+
+DONE = 3
+PLAYING = 4
+state = PLAYING
+
+score = 0
+lives = 3
+keys_down = {}
+
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
 FPS = 30
@@ -244,44 +267,73 @@ all_sprites.add(luigi)
 
 # ===== Loop principal =====
 
-while game:
+while state != DONE:
     clock.tick(FPS)
 
     # ----- Trata eventos
     for event in pygame.event.get():
         # ----- Verifica consequências
         if event.type == pygame.QUIT:
-            game = False
+            state = DONE
         # Verifica se apertou alguma tecla.
-        if event.type == pygame.KEYDOWN:
-            # Dependendo da tecla, altera a velocidade.
-            if event.key == pygame.K_LEFT:
-                luigi.speedx -= 8
-            if event.key == pygame.K_RIGHT:
-                luigi.speedx += 8
-            if event.key == pygame.K_UP:
-                luigi.jump()
-            if event.key == pygame.K_SPACE:
-                luigi.shoot()
-        # Verifica se soltou alguma tecla.
-        if event.type == pygame.KEYUP:
-            # Dependendo da tecla, altera a velocidade.
-            if event.key == pygame.K_LEFT:
-                luigi.speedx += 8
-            if event.key == pygame.K_RIGHT:
-                luigi.speedx -= 8
+        if state == PLAYING:
+            if event.type == pygame.KEYDOWN:
+                # Dependendo da tecla, altera a velocidade.
+                keys_down[event.key] = True
+                if event.key == pygame.K_LEFT:
+                    luigi.speedx -= 8
+                if event.key == pygame.K_RIGHT:
+                    luigi.speedx += 8
+                if event.key == pygame.K_UP:
+                    luigi.jump()
+                if event.key == pygame.K_SPACE:
+                    luigi.shoot()
+            # Verifica se soltou alguma tecla.
+            if event.type == pygame.KEYUP:
+                # Dependendo da tecla, altera a velocidade.
+                if event.key in keys_down and keys_down[event.key]:
+                    if event.key == pygame.K_LEFT:
+                        luigi.speedx += 8
+                    if event.key == pygame.K_RIGHT:
+                        luigi.speedx -= 8
 
     # ----- Atualiza estado do jogo
     all_sprites.update()
 
-    #Verifica se houve colisão entre a tartaruga e os bixos
-    hits = pygame.sprite.groupcollide(all_bixos, all_bullets, True, True)
-    for meteor in hits: # As chaves são os elementos do primeiro grupo (meteoros) que colidiram com alguma bala
-        # O meteoro e destruido e precisa ser recriado
-        m = Meteor(assets)
-        all_sprites.add(m)
-        all_bixos.add(m)
+    if state == PLAYING:
+        #Verifica se houve colisão entre a tartaruga e os bixos
+        hits = pygame.sprite.groupcollide(all_bixos, all_bullets, True, True)
+        for meteor in hits: # As chaves são os elementos do primeiro grupo (meteoros) que colidiram com alguma bala
+            # O bixo morre e precisa ser recriado
+            m = Meteor(assets)
+            all_sprites.add(m)
+            all_bixos.add(m)
 
+            score+=100
+            if score % 500 == 0:
+                    lives += 1
+                    m = Meteor(assets)
+                    all_sprites.add(m)
+                    all_bixos.add(m)
+        
+        # Verifica colisão com o personage 
+        hits = pygame.sprite.spritecollide(luigi, all_bixos, True)
+        if len(hits) > 0:
+            if lives==1:
+                state = DONE
+            else:
+                lives-=1
+                luigi.kill()
+                keys_down = {}
+                if score < 500:
+                    score = 0
+                else:
+                    score -= 500
+                luigi = Luigi(groups, assets)
+                all_sprites.add(luigi)
+                
+            
+        
     # ----- Gera saídas
     window.fill((255,255,255))  # Preenche com a cor branca
     window.blit(assets['background'],(0,0))
@@ -289,6 +341,28 @@ while game:
 
     #Desenha o Luigi
     all_sprites.draw(window)
+
+    # Desenhando o score
+    text_surface = assets['score_font'].render("{:03d}".format(score), True, (255, 255, 0))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (WIDTH / 2,  10)
+    window.blit(text_surface, text_rect)
+ 
+    assets['vidas'] = pygame.image.load('imagens/vidas.png').convert_alpha()
+    assets['vidas'] = pygame.transform.scale(assets['vidas'], (25, 20))
+    for a in range (0, lives):
+        img = assets['vidas']
+        img_rect = img.get_rect()
+        img_rect.bottomleft = (10 + 25*a, HEIGHT - 10)
+        window.blit(img, img_rect)
+
+    
+    # text_surface = assets['score_font'].render(chr(2) * lives, True, (255, 0, 0))
+    # text_rect = text_surface.get_rect()
+    # text_rect.bottomleft = (10, HEIGHT - 10)
+    # window.blit(text_surface, text_rect)
+
+
     pygame.display.update() # Mostra o novo frame para o jogador
 # ===== Finalização =====
 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados

@@ -19,7 +19,7 @@ click = False
 def main_menu ():
     while True:
         screen.blit ((fundo),(0,0))
-        draw_text ('Luigi run', font, (255, 255, 255), screen, 20, 20)
+        
         
         mx, my = pygame.mouse.get_pos()
         
@@ -31,8 +31,8 @@ def main_menu ():
         if button_2.collidepoint (mx,my):
             if click :
                 options()
-        pygame.draw.rect(screen, (0,150,0), button_1)
-        pygame.draw.rect(screen, (0,150,0), button_2)
+        pygame.draw.rect(screen, ( 0,200 ,0 ), button_1)
+        pygame.draw.rect(screen, ( 0, 200, 0), button_2)
 
         click = False
         for event in pygame.event.get():
