@@ -321,12 +321,12 @@ while state != DONE:
  
             score+=100
             if score % 1000 == 0:
-                    lives += 1
-                    if BIXOS<5:
-                        BIXOS+=1
-                        m = Meteor(assets)
-                        all_sprites.add(m)
-                        all_bixos.add(m)
+                lives += 1
+                if BIXOS<5:
+                    BIXOS+=1
+                    m = Meteor(assets)
+                    all_sprites.add(m)
+                    all_bixos.add(m)
         
         # Verifica colisão com o personage 
         hits = pygame.sprite.spritecollide(luigi, all_bixos, True)
