@@ -29,6 +29,7 @@ font = pygame.font.SysFont(None, 48)
 # Carrega os sons do jogo
 pygame.mixer.music.load('sons\musicaprincipal.wav')
 pygame.mixer.music.set_volume(0.2)
+volumes = True
 assets = {}
 assets['vida_perde'] = pygame.mixer.Sound('sons/Nope (Construction Worker TF2) - Gaming Sound Effect (HD) (1).wav')
 assets['vida_ganha'] = pygame.mixer.Sound('sons/Mario Coin Sound - Sound Effect (HD).wav')
@@ -56,13 +57,18 @@ for i in range(0,2):
     bixo.append(img)
 assets['bixo'] = bixo
 
+#Fazer o texto
 def draw_text (text, font, color, surface, x, y):
     textobj = font.render (text, 1, color)
     textrect = textobj.get_rect()
     textrect.topleft = (x,y)
     surface.blit (textobj, textrect)
+#musica do menu
 assets['menu'].play()
-assets['menu'].set_volume(0.2)
+    
+
+
+#Menu principal
 click = False
 jogando = True
 def main_menu ():
@@ -99,26 +105,90 @@ def main_menu ():
                     click = True
         pygame.display.update()
         mainclock.tick (60)
+
+#Opções
+click = False
+jogando = True
+
 def options():
-    screen.fill ((0,0,0))
-
-def gameover ():
-    
-    screen.fill ((0,0,0))
-
-    mx, my = pygame.mouse.get_pos()
-    acabou = pygame.Rect (20, 50, 200, 50)
-    continuar = pygame.Rect (200, 50, 200, 50)
-    pygame.draw.rect(screen, (50,205,10), acabou)
-    pygame.draw.rect(screen, (50,205,10), continuar)
+    global volumes
+    while jogando:
+        screen.fill ((0,0,0))
         
+        mx, my = pygame.mouse.get_pos()
+        voltar = pygame.Rect (10,10,200,50)
+        
+        volume = pygame.Rect (300, 210, 200, 50)
+       
+        if volume.collidepoint (mx,my):
+            if click :
+                if volumes:
+                    volumes = False
+                    assets['menu'].stop()
+                else:
+                    volumes = True
+                    assets['menu'].play()
+            
+        if voltar.collidepoint (mx,my):
+            if click:
+                main_menu()
+        pygame.draw.rect(screen, (0,250,10), volume)
+        draw_text('Volume',font,(255,255,255),screen,75,60)
 
-    if acabou.collidepoint (mx,my):
-        if click:
-                pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
-    if continuar.collidepoint (mx,my):
-        if click:
-                game()
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click= True
+        pygame.display.update()
+        mainclock.tick (60)
+
+
+#Tela de gameover
+def gameover ():
+    jogando = True
+    click = False
+    print ('gameover')
+    while jogando:
+    
+        screen.fill ((0,0,0))
+
+        mx, my = pygame.mouse.get_pos()
+        acabou = pygame.Rect (20, 50, 200, 50)
+        continuar = pygame.Rect (200, 50, 200, 50)
+        pygame.draw.rect(screen, (50,205,10), acabou)
+        pygame.draw.rect(screen, (50,205,10), continuar)
+            
+
+        if acabou.collidepoint (mx,my):
+            if click:
+                    pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
+        if continuar.collidepoint (mx,my):
+            if click:
+                    game()
+    
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click= True
+        pygame.display.update()
+        mainclock.tick (60)
                     
 #codigo do jogo
 def game ():
@@ -351,8 +421,8 @@ def game ():
     all_sprites.add(luigi)
 
     # ===== Loop principal =====
-
-    pygame.mixer.music.play(loops=-1)
+    if volumes:
+        pygame.mixer.music.play(loops=-1)
     while state != DONE:
         clock.tick(FPS)
         assets['menu'].stop()
@@ -415,6 +485,7 @@ def game ():
                     assets['fim'].play()
                     pygame.mixer.music.stop()
                     state = DONE
+                    gameover()
                 else:
                     lives-=1
                     assets['vida_perde'].play()
@@ -461,7 +532,8 @@ def game ():
 
         pygame.display.update() # Mostra o novo frame para o jogador
     # ===== Finalização =====
-    gameover()
+        #if lives == 0:
+         #   gameover()
     #pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
 
 main_menu ()
