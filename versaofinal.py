@@ -54,12 +54,16 @@ for i in range(0,2):
     bixo.append(img)
 assets['bixo'] = bixo
 
+#Fazer o texto
 def draw_text (text, font, color, surface, x, y):
     textobj = font.render (text, 1, color)
     textrect = textobj.get_rect()
     textrect.topleft = (x,y)
     surface.blit (textobj, textrect)
 assets['menu'].play()
+
+
+#Menu principal
 click = False
 jogando = True
 def main_menu ():
@@ -96,9 +100,80 @@ def main_menu ():
                     click = True
         pygame.display.update()
         mainclock.tick (60)
-def options():
-    screen.fill ((0,0,0))
 
+#Opções
+clicko = False
+mexendo = True
+
+def options():
+    while mexendo:
+        screen.fill ((0,0,0))
+        
+        mx, my = pygame.mouse.get_pos()
+        
+        volume = pygame.Rect (20, 50, 200, 50)
+        tamanho = pygame.Rect (400, 50, 200, 50)
+        
+            # if volume.collidepoint (mx,my):
+            #     if clicko:
+            #         volume()
+        if tamanho.collidepoint (mx,my):
+            if clicko :
+                tamanhodojogo()
+        pygame.draw.rect(screen, (50,205,10), volume)
+        pygame.draw.rect(screen, (50,205,10), tamanho)
+        draw_text('Volume',font,(255,255,255),screen,75,60)
+        draw_text('Tamanho',font,(255,255,255),screen,420,60)
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+        pygame.display.update()
+        mainclock.tick (60)
+
+clickt = False
+mexendot = True
+def tamanhodojogo():
+    while mexendot:
+        screen.fill ((0,0,0))
+        mx, my = pygame.mouse.get_pos()
+        full = pygame.Rect (20, 50, 200, 50)
+        medio = pygame.Rect (400, 50, 200, 50)
+        voltar = pygame.Rect (10, 10, 200, 50)
+        if full.collidepoint (mx,my):
+            if clickt:
+                WIDTH = 1980
+                HEIGHT = 1080
+        if medio.collidepoint (mx,my):
+            if clickt :
+                WIDTH = 500
+                HEIGHT = 500
+        if voltar.collidepoint (mx,my):
+            if clickt :
+                options()
+        pygame.draw.rect(screen, (50,205,10), full)
+        pygame.draw.rect(screen, (50,205,10), medio)
+        pygame.draw.rect(screen, (50,205,10), voltar)
+        draw_text('1980x1080',font,(255,255,255),screen,75,60)
+        draw_text('500x500',font,(255,255,255),screen,75,60)
+        draw_text('voltar',font,(255,255,255),screen,10,10)
+
+#def volume ():
+
+
+
+
+
+#Tela de gameover
 def gameover ():
     
     screen.fill ((0,0,0))
@@ -456,7 +531,8 @@ def game ():
 
         pygame.display.update() # Mostra o novo frame para o jogador
     # ===== Finalização =====
-    gameover()
+        if lives == 0:
+            gameover()
     #pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
 
 main_menu ()
