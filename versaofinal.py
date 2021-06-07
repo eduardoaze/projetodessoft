@@ -5,6 +5,7 @@ import time
 mainclock = pygame.time.Clock()
 from pygame.locals import *
 pygame.init ()
+pygame.mixer.init()
 pygame.display.set_caption ('game base')
 screen = pygame.display.set_mode((500, 500), 0, 32)
 
