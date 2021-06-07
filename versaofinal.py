@@ -5,6 +5,7 @@ import time
 mainclock = pygame.time.Clock()
 from pygame.locals import *
 pygame.init ()
+pygame.mixer.init()
 pygame.display.set_caption ('game base')
 screen = pygame.display.set_mode((500, 500), 0, 32)
 
@@ -32,6 +33,7 @@ assets = {}
 assets['vida_perde'] = pygame.mixer.Sound('sons/Nope (Construction Worker TF2) - Gaming Sound Effect (HD) (1).wav')
 assets['vida_ganha'] = pygame.mixer.Sound('sons/Mario Coin Sound - Sound Effect (HD).wav')
 assets['menu'] = pygame.mixer.Sound('sons\menu.wav')
+assets['menu'].set_volume(0.2)
 assets['fim'] = pygame.mixer.Sound('sons\Super Mario Dies Sound Effect.wav')
 assets['morre'] = pygame.mixer.Sound('sons\Splat - Gaming Sound Effect (HD).wav')
 assets['pulo'] = pygame.mixer.Sound('sons\Mario Jump - Gaming Sound Effect (HD).wav')
@@ -61,9 +63,13 @@ def draw_text (text, font, color, surface, x, y):
     textrect.topleft = (x,y)
     surface.blit (textobj, textrect)
 assets['menu'].play()
+<<<<<<< HEAD
 
 
 #Menu principal
+=======
+assets['menu'].set_volume(0.2)
+>>>>>>> a551601e32a9a7a8abfbe48eaba0f00af7fb5583
 click = False
 jogando = True
 def main_menu ():
@@ -374,6 +380,7 @@ def game ():
                 self.speedy -= JUMP_SIZE
                 self.state = JUMPING
                 assets['pulo'].play()
+                assets['pulo'].set_volume(0.2)
 
         def shoot(self):
             # A nova bala vai ser criada logo acima e no centro horizontal da nave
@@ -427,6 +434,7 @@ def game ():
     while state != DONE:
         clock.tick(FPS)
         assets['menu'].stop()
+        assets['menu'].set_volume(0.2)
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
