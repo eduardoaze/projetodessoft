@@ -33,6 +33,7 @@ assets = {}
 assets['vida_perde'] = pygame.mixer.Sound('sons/Nope (Construction Worker TF2) - Gaming Sound Effect (HD) (1).wav')
 assets['vida_ganha'] = pygame.mixer.Sound('sons/Mario Coin Sound - Sound Effect (HD).wav')
 assets['menu'] = pygame.mixer.Sound('sons\menu.wav')
+assets['menu'].set_volume(0.2)
 assets['fim'] = pygame.mixer.Sound('sons\Super Mario Dies Sound Effect.wav')
 assets['morre'] = pygame.mixer.Sound('sons\Splat - Gaming Sound Effect (HD).wav')
 assets['pulo'] = pygame.mixer.Sound('sons\Mario Jump - Gaming Sound Effect (HD).wav')
@@ -55,12 +56,20 @@ for i in range(0,2):
     bixo.append(img)
 assets['bixo'] = bixo
 
+#Fazer o texto
 def draw_text (text, font, color, surface, x, y):
     textobj = font.render (text, 1, color)
     textrect = textobj.get_rect()
     textrect.topleft = (x,y)
     surface.blit (textobj, textrect)
 assets['menu'].play()
+<<<<<<< HEAD
+
+
+#Menu principal
+=======
+assets['menu'].set_volume(0.2)
+>>>>>>> a551601e32a9a7a8abfbe48eaba0f00af7fb5583
 click = False
 jogando = True
 def main_menu ():
@@ -97,9 +106,80 @@ def main_menu ():
                     click = True
         pygame.display.update()
         mainclock.tick (60)
-def options():
-    screen.fill ((0,0,0))
 
+#Opções
+clicko = False
+mexendo = True
+
+def options():
+    while mexendo:
+        screen.fill ((0,0,0))
+        
+        mx, my = pygame.mouse.get_pos()
+        
+        volume = pygame.Rect (20, 50, 200, 50)
+        tamanho = pygame.Rect (400, 50, 200, 50)
+        
+            # if volume.collidepoint (mx,my):
+            #     if clicko:
+            #         volume()
+        if tamanho.collidepoint (mx,my):
+            if clicko :
+                tamanhodojogo()
+        pygame.draw.rect(screen, (50,205,10), volume)
+        pygame.draw.rect(screen, (50,205,10), tamanho)
+        draw_text('Volume',font,(255,255,255),screen,75,60)
+        draw_text('Tamanho',font,(255,255,255),screen,420,60)
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+        pygame.display.update()
+        mainclock.tick (60)
+
+clickt = False
+mexendot = True
+def tamanhodojogo():
+    while mexendot:
+        screen.fill ((0,0,0))
+        mx, my = pygame.mouse.get_pos()
+        full = pygame.Rect (20, 50, 200, 50)
+        medio = pygame.Rect (400, 50, 200, 50)
+        voltar = pygame.Rect (10, 10, 200, 50)
+        if full.collidepoint (mx,my):
+            if clickt:
+                WIDTH = 1980
+                HEIGHT = 1080
+        if medio.collidepoint (mx,my):
+            if clickt :
+                WIDTH = 500
+                HEIGHT = 500
+        if voltar.collidepoint (mx,my):
+            if clickt :
+                options()
+        pygame.draw.rect(screen, (50,205,10), full)
+        pygame.draw.rect(screen, (50,205,10), medio)
+        pygame.draw.rect(screen, (50,205,10), voltar)
+        draw_text('1980x1080',font,(255,255,255),screen,75,60)
+        draw_text('500x500',font,(255,255,255),screen,75,60)
+        draw_text('voltar',font,(255,255,255),screen,10,10)
+
+#def volume ():
+
+
+
+
+
+#Tela de gameover
 def gameover ():
     
     screen.fill ((0,0,0))
@@ -300,6 +380,7 @@ def game ():
                 self.speedy -= JUMP_SIZE
                 self.state = JUMPING
                 assets['pulo'].play()
+                assets['pulo'].set_volume(0.2)
 
         def shoot(self):
             # A nova bala vai ser criada logo acima e no centro horizontal da nave
@@ -353,6 +434,7 @@ def game ():
     while state != DONE:
         clock.tick(FPS)
         assets['menu'].stop()
+        assets['menu'].set_volume(0.2)
         # ----- Trata eventos
         for event in pygame.event.get():
             # ----- Verifica consequências
@@ -457,7 +539,8 @@ def game ():
 
         pygame.display.update() # Mostra o novo frame para o jogador
     # ===== Finalização =====
-    gameover()
+        if lives == 0:
+            gameover()
     #pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
 
 main_menu ()
