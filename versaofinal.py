@@ -29,6 +29,7 @@ font = pygame.font.SysFont(None, 48)
 # Carrega os sons do jogo
 pygame.mixer.music.load('sons\musicaprincipal.wav')
 pygame.mixer.music.set_volume(0.2)
+volumes = True
 assets = {}
 assets['vida_perde'] = pygame.mixer.Sound('sons/Nope (Construction Worker TF2) - Gaming Sound Effect (HD) (1).wav')
 assets['vida_ganha'] = pygame.mixer.Sound('sons/Mario Coin Sound - Sound Effect (HD).wav')
@@ -62,14 +63,12 @@ def draw_text (text, font, color, surface, x, y):
     textrect = textobj.get_rect()
     textrect.topleft = (x,y)
     surface.blit (textobj, textrect)
+#musica do menu
 assets['menu'].play()
-<<<<<<< HEAD
+    
 
 
 #Menu principal
-=======
-assets['menu'].set_volume(0.2)
->>>>>>> a551601e32a9a7a8abfbe48eaba0f00af7fb5583
 click = False
 jogando = True
 def main_menu ():
@@ -108,28 +107,34 @@ def main_menu ():
         mainclock.tick (60)
 
 #Opções
-clicko = False
-mexendo = True
+click = False
+jogando = True
 
 def options():
-    while mexendo:
+    global volumes
+    while jogando:
         screen.fill ((0,0,0))
         
         mx, my = pygame.mouse.get_pos()
+        voltar = pygame.Rect (10,10,200,50)
         
-        volume = pygame.Rect (20, 50, 200, 50)
-        tamanho = pygame.Rect (400, 50, 200, 50)
-        
-            # if volume.collidepoint (mx,my):
-            #     if clicko:
-            #         volume()
-        if tamanho.collidepoint (mx,my):
-            if clicko :
-                tamanhodojogo()
-        pygame.draw.rect(screen, (50,205,10), volume)
-        pygame.draw.rect(screen, (50,205,10), tamanho)
+        volume = pygame.Rect (300, 210, 200, 50)
+       
+        if volume.collidepoint (mx,my):
+            if click :
+                if volumes:
+                    volumes = False
+                    assets['menu'].stop()
+                else:
+                    volumes = True
+                    assets['menu'].play()
+            
+        if voltar.collidepoint (mx,my):
+            if click:
+                main_menu()
+        pygame.draw.rect(screen, (0,250,10), volume)
         draw_text('Volume',font,(255,255,255),screen,75,60)
-        draw_text('Tamanho',font,(255,255,255),screen,420,60)
+
 
         click = False
         for event in pygame.event.get():
@@ -142,61 +147,48 @@ def options():
                     sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    click = True
+                    click= True
         pygame.display.update()
         mainclock.tick (60)
-
-clickt = False
-mexendot = True
-def tamanhodojogo():
-    while mexendot:
-        screen.fill ((0,0,0))
-        mx, my = pygame.mouse.get_pos()
-        full = pygame.Rect (20, 50, 200, 50)
-        medio = pygame.Rect (400, 50, 200, 50)
-        voltar = pygame.Rect (10, 10, 200, 50)
-        if full.collidepoint (mx,my):
-            if clickt:
-                WIDTH = 1980
-                HEIGHT = 1080
-        if medio.collidepoint (mx,my):
-            if clickt :
-                WIDTH = 500
-                HEIGHT = 500
-        if voltar.collidepoint (mx,my):
-            if clickt :
-                options()
-        pygame.draw.rect(screen, (50,205,10), full)
-        pygame.draw.rect(screen, (50,205,10), medio)
-        pygame.draw.rect(screen, (50,205,10), voltar)
-        draw_text('1980x1080',font,(255,255,255),screen,75,60)
-        draw_text('500x500',font,(255,255,255),screen,75,60)
-        draw_text('voltar',font,(255,255,255),screen,10,10)
-
-#def volume ():
-
-
-
 
 
 #Tela de gameover
 def gameover ():
+    jogando = True
+    click = False
+    print ('gameover')
+    while jogando:
     
-    screen.fill ((0,0,0))
+        screen.fill ((0,0,0))
 
-    mx, my = pygame.mouse.get_pos()
-    acabou = pygame.Rect (20, 50, 200, 50)
-    continuar = pygame.Rect (200, 50, 200, 50)
-    pygame.draw.rect(screen, (50,205,10), acabou)
-    pygame.draw.rect(screen, (50,205,10), continuar)
-        
+        mx, my = pygame.mouse.get_pos()
+        acabou = pygame.Rect (20, 50, 200, 50)
+        continuar = pygame.Rect (200, 50, 200, 50)
+        pygame.draw.rect(screen, (50,205,10), acabou)
+        pygame.draw.rect(screen, (50,205,10), continuar)
+            
 
-    if acabou.collidepoint (mx,my):
-        if click:
-                pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
-    if continuar.collidepoint (mx,my):
-        if click:
-                game()
+        if acabou.collidepoint (mx,my):
+            if click:
+                    pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
+        if continuar.collidepoint (mx,my):
+            if click:
+                    game()
+    
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click= True
+        pygame.display.update()
+        mainclock.tick (60)
                     
 #codigo do jogo
 def game ():
@@ -429,8 +421,8 @@ def game ():
     all_sprites.add(luigi)
 
     # ===== Loop principal =====
-
-    pygame.mixer.music.play(loops=-1)
+    if volumes:
+        pygame.mixer.music.play(loops=-1)
     while state != DONE:
         clock.tick(FPS)
         assets['menu'].stop()
@@ -493,6 +485,7 @@ def game ():
                     assets['fim'].play()
                     pygame.mixer.music.stop()
                     state = DONE
+                    gameover()
                 else:
                     lives-=1
                     assets['vida_perde'].play()
@@ -539,8 +532,8 @@ def game ():
 
         pygame.display.update() # Mostra o novo frame para o jogador
     # ===== Finalização =====
-        if lives == 0:
-            gameover()
+        #if lives == 0:
+         #   gameover()
     #pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
 
 main_menu ()
