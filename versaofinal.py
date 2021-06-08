@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((500, 500), 0, 32)
 
 font = pygame.font.SysFont (None, 20)
 #fundo
-tela = pygame.image.load('imagens/tela.jpg').convert()
+tela = pygame.image.load('imagens/inicio.png').convert()
 
 WIDTH = 620
 HEIGHT = 310
@@ -78,18 +78,14 @@ def main_menu ():
         
         mx, my = pygame.mouse.get_pos()
         
-        button_1 = pygame.Rect (20, 50, 200, 50)
-        button_2 = pygame.Rect (400, 50, 200, 50)
+        button_1 = pygame.Rect (20, 30, 200, 50)
+        button_2 = pygame.Rect (400, 30, 200, 50)
         if button_1.collidepoint (mx,my):
             if click:
                 game()
         if button_2.collidepoint (mx,my):
             if click :
                 options()
-        pygame.draw.rect(screen, (50,205,10), button_1)
-        pygame.draw.rect(screen, (50,205,10), button_2)
-        draw_text('PLAY!',font,(255,255,255),screen,75,60)
-        draw_text('OPTIONS',font,(255,255,255),screen,420,60)
 
         click = False
         for event in pygame.event.get():
