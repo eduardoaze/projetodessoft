@@ -1,24 +1,22 @@
+#importando
 import pygame, sys
 import random
 import time
-
+#configurações
 mainclock = pygame.time.Clock()
 from pygame.locals import *
 pygame.init ()
 pygame.mixer.init()
 pygame.display.set_caption ('game base')
 screen = pygame.display.set_mode((500, 500), 0, 32)
-
 font = pygame.font.SysFont (None, 20)
-#fundo
+#fundo e tamanhos
 tela = pygame.image.load('imagens/inicio.png').convert()
-
 WIDTH = 620
 HEIGHT = 310
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Luigi Run')
 screen = pygame.display.set_mode((620, 310),0,32)
-
 
 # ----- Inicia assets
 obstaculo_WIDTH = 50
@@ -29,7 +27,9 @@ font = pygame.font.SysFont(None, 48)
 # Carrega os sons do jogo
 pygame.mixer.music.load('sons\musicaprincipal.wav')
 pygame.mixer.music.set_volume(0.2)
+#inicia o jogo com volume
 volumes = True
+#asstes
 assets = {}
 assets['vida_perde'] = pygame.mixer.Sound('sons/Nope (Construction Worker TF2) - Gaming Sound Effect (HD) (1).wav')
 assets['vida_ganha'] = pygame.mixer.Sound('sons/Mario Coin Sound - Sound Effect (HD).wav')
@@ -65,19 +65,13 @@ def draw_text (text, font, color, surface, x, y):
     surface.blit (textobj, textrect)
 #musica do menu
 assets['menu'].play()
-    
-
-
 #Menu principal
 def main_menu ():
     click = False
     jogando = True
     while jogando:
         screen.blit ((tela),(0,0))
-        
-        
         mx, my = pygame.mouse.get_pos()
-        
         button_1 = pygame.Rect (20, 30, 200, 50)
         button_2 = pygame.Rect (400, 30, 200, 50)
         if button_1.collidepoint (mx,my):
@@ -86,7 +80,6 @@ def main_menu ():
         if button_2.collidepoint (mx,my):
             if click :
                 options()
-
         click = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -101,7 +94,6 @@ def main_menu ():
                     click = True
         pygame.display.update()
         mainclock.tick (60)
-
 #telas com e sem som
 paraabrir = pygame.image.load('imagens/ofundoabertocomvoltar.png').convert()
 parafechar = pygame.image.load('imagens/ofundofechadocomvoltar.png').convert()
@@ -115,12 +107,9 @@ def options():
             screen.blit (parafechar,(0,0))
         else:
             screen.blit (paraabrir,(0,0))
-        
         mx, my = pygame.mouse.get_pos()
         voltar = pygame.Rect (10,10,200,50)
-        
         volume = pygame.Rect (240, 80, 140, 110)
-       
         if volume.collidepoint (mx,my):
             if click :
                 if volumes:
@@ -129,7 +118,6 @@ def options():
                 else:
                     volumes = True
                     assets['menu'].play()
-            
         if voltar.collidepoint (mx,my):
             if click:
                 main_menu()
@@ -172,7 +160,7 @@ def gameover ():
             if click:
                 main_menu()  
         #pontuação da rodada
-        text_surface = assets['score_font'].render("{:03d}".format(score), True, (0, 180,0 ))
+        text_surface = assets['score_font'].render("{:03d}".format(score), True, (255, 255,255 ))
         text_rect = text_surface.get_rect()
         text_rect.midtop = (WIDTH / 3,  110)
         window.blit(text_surface, text_rect)
@@ -525,15 +513,10 @@ def game ():
             img_rect.bottomleft = (10 + 25*a, HEIGHT - 10)
             window.blit(img, img_rect)
 
-        
-        # text_surface = assets['score_font'].render(chr(2) * lives, True, (255, 0, 0))
-        # text_rect = text_surface.get_rect()
-        # text_rect.bottomleft = (10, HEIGHT - 10)
-        # window.blit(text_surface, text_rect)
+    
 
 
         pygame.display.update() # Mostra o novo frame para o jogador
-    # ===== Finalização =====
-    #pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
+
 
 main_menu ()
