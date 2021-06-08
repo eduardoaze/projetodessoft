@@ -56,7 +56,6 @@ for i in range(0,2):
     img = pygame.transform.scale(img, (50,38))
     bixo.append(img)
 assets['bixo'] = bixo
-score = 0
 #Fazer o texto
 def draw_text (text, font, color, surface, x, y):
     textobj = font.render (text, 1, color)
@@ -181,6 +180,8 @@ def gameover ():
                     
 #codigo do jogo
 def game ():
+    global score
+    score = 0
     luigi_esquerda_anim = []
     for i in range(3, 5):
         filename = 'imagens/luigi0{}.png'.format(i)
@@ -386,7 +387,7 @@ def game ():
     state = PLAYING
 
     BIXOS = 3
-    #score = 0
+    
     lives = 3
     keys_down = {}
 
@@ -458,7 +459,6 @@ def game ():
                 all_bixos.add(m)
                 if volumes:
                     assets['morre'].play()
-                global score
                 score+=100
                 if score % 1000 == 0:
                     lives += 1
