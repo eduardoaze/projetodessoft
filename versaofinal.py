@@ -110,6 +110,7 @@ def options():
         mx, my = pygame.mouse.get_pos()
         voltar = pygame.Rect (10,10,200,50)
         volume = pygame.Rect (240, 80, 140, 110)
+        #muta e desmuta
         if volume.collidepoint (mx,my):
             if click :
                 if volumes:
@@ -118,10 +119,10 @@ def options():
                 else:
                     volumes = True
                     assets['menu'].play()
+        #volta para o menu
         if voltar.collidepoint (mx,my):
             if click:
                 main_menu()
-
         click = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -141,7 +142,6 @@ def options():
 gamedown = pygame.image.load('imagens/gameover.png').convert()
 
 #Tela de gameover
-
 def gameover ():
     jogando = True
     click = False
@@ -151,11 +151,11 @@ def gameover ():
         mx, my = pygame.mouse.get_pos()
         jogarnovamente = pygame.Rect (30, 220, 270, 50)
         menu = pygame.Rect (390, 250, 120, 50)    
-        
+        #para o jogo
         if jogarnovamente.collidepoint (mx,my):
             if click:
                 game()
-            
+        #para o menu   
         if menu.collidepoint (mx,my):
             if click:
                 main_menu()  
@@ -164,7 +164,6 @@ def gameover ():
         text_rect = text_surface.get_rect()
         text_rect.midtop = (WIDTH / 3,  110)
         window.blit(text_surface, text_rect)
-
         click = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -361,8 +360,9 @@ def game ():
             if self.state == STILL:
                 self.speedy -= JUMP_SIZE
                 self.state = JUMPING
-                assets['pulo'].play()
-                assets['pulo'].set_volume(0.2)
+                if volumes:
+                    assets['pulo'].play()
+                    assets['pulo'].set_volume(0.2)
 
         def shoot(self):
             # A nova bala vai ser criada logo acima e no centro horizontal da nave
@@ -456,12 +456,14 @@ def game ():
                 m = Meteor(assets)
                 all_sprites.add(m)
                 all_bixos.add(m)
-                assets['morre'].play()
+                if volumes:
+                    assets['morre'].play()
                 global score
                 score+=100
                 if score % 1000 == 0:
                     lives += 1
-                    assets['vida_ganha'].play()
+                    if volumes:
+                        assets['vida_ganha'].play()
                     if BIXOS<4:
                         BIXOS+=1
                         m = Meteor(assets)
@@ -472,13 +474,15 @@ def game ():
             hits = pygame.sprite.spritecollide(luigi, all_bixos, True)
             if len(hits) > 0:
                 if lives==1:
-                    assets['fim'].play()
+                    if volumes:
+                        assets['fim'].play()
                     pygame.mixer.music.stop()
                     state = DONE
                     gameover()
                 else:
                     lives-=1
-                    assets['vida_perde'].play()
+                    if volumes:
+                        assets['vida_perde'].play()
                     # assets['morre'].play()
                     luigi.kill()
                     keys_down = {}
