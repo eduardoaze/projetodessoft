@@ -56,7 +56,7 @@ for i in range(0,2):
     img = pygame.transform.scale(img, (50,38))
     bixo.append(img)
 assets['bixo'] = bixo
-
+score = 0
 #Fazer o texto
 def draw_text (text, font, color, surface, x, y):
     textobj = font.render (text, 1, color)
@@ -157,6 +157,7 @@ gamedown = pygame.image.load('imagens/gameover.png').convert()
 def gameover ():
     jogando = True
     click = False
+    global score
     while jogando:
         screen.blit (gamedown,(0,0))
         mx, my = pygame.mouse.get_pos()
@@ -170,6 +171,11 @@ def gameover ():
         if menu.collidepoint (mx,my):
             if click:
                 main_menu()  
+        #pontuação da rodada
+        text_surface = assets['score_font'].render("{:03d}".format(score), True, (0, 180,0 ))
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (WIDTH / 3,  110)
+        window.blit(text_surface, text_rect)
 
         click = False
         for event in pygame.event.get():
@@ -392,7 +398,7 @@ def game ():
     state = PLAYING
 
     BIXOS = 3
-    score = 0
+    #score = 0
     lives = 3
     keys_down = {}
 
@@ -463,7 +469,7 @@ def game ():
                 all_sprites.add(m)
                 all_bixos.add(m)
                 assets['morre'].play()
-    
+                global score
                 score+=100
                 if score % 1000 == 0:
                     lives += 1
