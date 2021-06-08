@@ -69,9 +69,9 @@ assets['menu'].play()
 
 
 #Menu principal
-click = False
-jogando = True
 def main_menu ():
+    click = False
+    jogando = True
     while jogando:
         screen.blit ((tela),(0,0))
         
@@ -102,13 +102,13 @@ def main_menu ():
         pygame.display.update()
         mainclock.tick (60)
 
-#Opções
-click = False
-jogando = True
 #telas com e sem som
 paraabrir = pygame.image.load('imagens/ofundoabertocomvoltar.png').convert()
 parafechar = pygame.image.load('imagens/ofundofechadocomvoltar.png').convert()
+#Opções
 def options():
+    click = False
+    jogando = True
     global volumes
     while jogando:
         if volumes:
@@ -149,29 +149,28 @@ def options():
         pygame.display.update()
         mainclock.tick (60)
 
+#imagem da tela de game over
+gamedown = pygame.image.load('imagens/gameover.png').convert()
 
 #Tela de gameover
+
 def gameover ():
     jogando = True
     click = False
     while jogando:
-    
-        screen.fill ((0,0,0))
-
+        screen.blit (gamedown,(0,0))
         mx, my = pygame.mouse.get_pos()
-        acabou = pygame.Rect (20, 50, 200, 50)
-        continuar = pygame.Rect (200, 50, 200, 50)
-        pygame.draw.rect(screen, (50,205,10), acabou)
-        pygame.draw.rect(screen, (50,205,10), continuar)
+        jogarnovamente = pygame.Rect (30, 220, 270, 50)
+        menu = pygame.Rect (390, 250, 120, 50)    
+        
+        if jogarnovamente.collidepoint (mx,my):
+            if click:
+                game()
             
+        if menu.collidepoint (mx,my):
+            if click:
+                main_menu()  
 
-        if acabou.collidepoint (mx,my):
-            if click:
-                    pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
-        if continuar.collidepoint (mx,my):
-            if click:
-                    game()
-    
         click = False
         for event in pygame.event.get():
             if event.type == QUIT:
