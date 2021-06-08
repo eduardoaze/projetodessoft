@@ -109,16 +109,21 @@ def main_menu ():
 #Opções
 click = False
 jogando = True
-
+#telas com e sem som
+paraabrir = pygame.image.load('imagens/ofundoabertocomvoltar.png').convert()
+parafechar = pygame.image.load('imagens/ofundofechadocomvoltar.png').convert()
 def options():
     global volumes
     while jogando:
-        screen.fill ((0,0,0))
+        if volumes:
+            screen.blit (parafechar,(0,0))
+        else:
+            screen.blit (paraabrir,(0,0))
         
         mx, my = pygame.mouse.get_pos()
         voltar = pygame.Rect (10,10,200,50)
         
-        volume = pygame.Rect (300, 210, 200, 50)
+        volume = pygame.Rect (240, 80, 140, 110)
        
         if volume.collidepoint (mx,my):
             if click :
@@ -132,9 +137,6 @@ def options():
         if voltar.collidepoint (mx,my):
             if click:
                 main_menu()
-        pygame.draw.rect(screen, (0,250,10), volume)
-        draw_text('Volume',font,(255,255,255),screen,75,60)
-
 
         click = False
         for event in pygame.event.get():
@@ -156,7 +158,6 @@ def options():
 def gameover ():
     jogando = True
     click = False
-    print ('gameover')
     while jogando:
     
         screen.fill ((0,0,0))
@@ -532,8 +533,6 @@ def game ():
 
         pygame.display.update() # Mostra o novo frame para o jogador
     # ===== Finalização =====
-        #if lives == 0:
-         #   gameover()
     #pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
 
 main_menu ()
