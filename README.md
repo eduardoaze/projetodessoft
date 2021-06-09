@@ -8,3 +8,5 @@ O jogo é no estilo de sobrevivência e acúmulo de pontos, o jogador pode dar �
 Para cada 10 inimigos mortos o jogador ganha uma vida, e toda vez que um bixo toca nele ele morre perdendo uma.
 Depois de perder todas as suas vidas o jogador vai para a tela de gameover, onde a sua pontuação é apresentada junto com outras duas opções, o jogador pode tanto recomeçar o jogo, quanto voltar ao menu.
 Para a produção do jogo apenas a biblioteca pygame foi utilizada e precisa ser instalada previamente para rodar o jogo.
+
+O arquivo com a versão correta do jogo, funcionando 100%, se chama "versaofinal.py"
