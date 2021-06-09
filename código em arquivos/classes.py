@@ -1,6 +1,6 @@
 import random
 import pygame
-from assets import bixo, tartaruga_anim, luigi_direita_anim, assets, luigi_esquerda_anim
+# from assets import bixo, tartaruga_anim, luigi_direita_anim, assets, luigi_esquerda_anim
 from config import WIDTH, HEIGHT, GRAVITY, FALLING, GROUND, STILL, JUMP_SIZE, JUMPING
 
 class Meteor(pygame.sprite.Sprite):

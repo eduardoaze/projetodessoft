@@ -9,6 +9,7 @@ from game_screen import game
 pygame.init()
 pygame.mixer.init()
 
+
 # GERA A TELA
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Luigi Run')
@@ -16,6 +17,6 @@ pygame.display.set_caption('Luigi Run')
 state = PLAYING
 while state != DONE:
     if state == PLAYING:
-        state = main_menu(window)
+        state = main_menu()
     else:
         state = DONE

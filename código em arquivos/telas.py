@@ -1,7 +1,9 @@
 import pygame, sys
+
+from pygame.image import load
 from config import HEIGHT, WIDTH, score, DONE, PLAYING
 from pygame.locals import *
-from assets import assets
+from assets import loadassets
 from classes import Meteor, Luigi
 
 volumes = True
@@ -13,12 +15,15 @@ def draw_text (text, font, color, surface, x, y):
     surface.blit (textobj, textrect)
 
 mainclock = pygame.time.Clock()
-tela = pygame.image.load('imagens/inicio.png').convert()
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 screen = pygame.display.set_mode((500, 500), 0, 32)
-font = pygame.font.SysFont (None, 20)
 
 def main_menu ():
+    global volumes
+    assets = loadassets()
+    assets['menu'].play()
+    font = pygame.font.SysFont (None, 20)
+    tela = pygame.image.load('imagens/inicio.png').convert()
     click = False
     jogando = True
     while jogando:
@@ -50,10 +55,12 @@ def main_menu ():
 paraabrir = pygame.image.load('imagens/ofundoabertocomvoltar.png').convert()
 parafechar = pygame.image.load('imagens/ofundofechadocomvoltar.png').convert()
 #Opções
+jogando = True
 def options():
+    global volumes
+    assets = loadassets()
     click = False
     jogando = True
-    global volumes
     while jogando:
         if volumes:
             screen.blit (parafechar,(0,0))
@@ -96,6 +103,7 @@ gamedown = pygame.image.load('imagens/gameover.png').convert()
 
 #Tela de gameover
 def gameover ():
+    assets = loadassets ()
     jogando = True
     click = False
     global score
@@ -132,27 +140,29 @@ def gameover ():
         pygame.display.update()
         mainclock.tick (60)
 
-def game ():
-    running = True
-    while running:
-        screen.fill ((0,0,0))
+# def game ():
+#     running = True
+#     while running:
+#         screen.fill ((0,0,0))
 
-        draw_text ('game', font, (255, 255, 255), screen, 20, 20)
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    running = False
-        pygame.display.update()
-        mainclock.tick (60)
+#         draw_text ('game', font, (255, 255, 255), screen, 20, 20)
+#         for event in pygame.event.get():
+#             if event.type == QUIT:
+#                 pygame.quit()
+#                 sys.exit()
+#             if event.type == KEYDOWN:
+#                 if event.key == K_ESCAPE:
+#                     pygame.quit()
+#                     sys.exit()
+#             if event.type == MOUSEBUTTONDOWN:
+#                 if event.button == 1:
+#                     running = False
+#         pygame.display.update()
+#         mainclock.tick (60)
 
 def game ():
+    assets = loadassets()
+    global volumes
     global score
     BIXOS = 3
     score = 0

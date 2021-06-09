@@ -1,9 +1,11 @@
 import pygame
 from classes import Meteor, Luigi, Bullet
-from assets import assets
-from config import DONE,volumes, PLAYING, WIDTH, HEIGHT
+from assets import loadassets
+from config import DONE, PLAYING, WIDTH, HEIGHT
 from telas import gameover, window
+volumes = True
 def game ():
+    assets = loadassets()
     global score
     BIXOS = 3
     score = 0
