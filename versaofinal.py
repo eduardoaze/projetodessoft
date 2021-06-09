@@ -139,7 +139,7 @@ def options():
         #DESENHA OS BOTÕES
         voltar = pygame.Rect (10,10,200,50)
         volume = pygame.Rect (240, 80, 140, 110)
-        #MUTA E DESMUTA
+        #MUTA E DESMUTA TODOS OS SONS
         if volume.collidepoint (mx,my):
             if click :
                 if volumes:
