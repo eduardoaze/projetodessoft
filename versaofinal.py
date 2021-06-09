@@ -79,13 +79,6 @@ for i in range(1, 4):
 assets['tartaruga_anim'] = tartaruga_anim
 assets["score_font"] = font
 
-#Fazer o texto
-def draw_text (text, font, color, surface, x, y):
-    textobj = font.render (text, 1, color)
-    textrect = textobj.get_rect()
-    textrect.topleft = (x,y)
-    surface.blit (textobj, textrect)
-
 #TOCA A MUSICA DO MENU
 assets['menu'].play()
 
@@ -94,8 +87,10 @@ def main_menu ():
     click = False
     jogando = True
     while jogando:
+        #DESENHA A TELA DO MENU
         screen.blit ((tela),(0,0))
         mx, my = pygame.mouse.get_pos()
+        #CRIA OS BOTÕES
         button_1 = pygame.Rect (20, 30, 200, 50)
         button_2 = pygame.Rect (400, 30, 200, 50)
         #VERIFICA SE CLICOU NO BOTÃO DE INCIAR O JOGO
@@ -107,6 +102,8 @@ def main_menu ():
             if click :
                 options()
         click = False
+
+        #FUNCIONAMENTO DO BOTÃO
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -118,11 +115,15 @@ def main_menu ():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
+
+        #ATUALIZA A TELA
         pygame.display.update()
         mainclock.tick (60)
+
 #CARREGA IMAGENS PARA A ANIMAÇÃO DE LIGAR E DESLIGAR O SOM
 paraabrir = pygame.image.load('imagens/ofundoabertocomvoltar.png').convert()
 parafechar = pygame.image.load('imagens/ofundofechadocomvoltar.png').convert()
+
 #Opções
 def options():
     click = False
@@ -135,6 +136,7 @@ def options():
         else:
             screen.blit (paraabrir,(0,0))
         mx, my = pygame.mouse.get_pos()
+        #DESENHA OS BOTÕES
         voltar = pygame.Rect (10,10,200,50)
         volume = pygame.Rect (240, 80, 140, 110)
         #MUTA E DESMUTA
@@ -151,6 +153,8 @@ def options():
             if click:
                 main_menu()
         click = False
+
+        #FUNCIONAMENTO DO BOTÃO
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -162,6 +166,8 @@ def options():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click= True
+
+        #ATUALIZA A TELA
         pygame.display.update()
         mainclock.tick (60)
 
@@ -176,6 +182,7 @@ def gameover ():
     while jogando:
         screen.blit (gamedown,(0,0))
         mx, my = pygame.mouse.get_pos()
+        #DESENHA OS BOTÕES
         jogarnovamente = pygame.Rect (30, 220, 270, 50)
         menu = pygame.Rect (390, 250, 120, 50)    
         #VERIFICA SE CLICOU NO BOTÃO DE JOGAR NOVAMENTE
@@ -192,6 +199,8 @@ def gameover ():
         text_rect.midtop = (WIDTH / 3,  110)
         window.blit(text_surface, text_rect)
         click = False
+
+        #FUNCIONAMENTO DO BOTÃO
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -203,15 +212,16 @@ def gameover ():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click= True
+
+        #ATUALIZA A TELA
         pygame.display.update()
         mainclock.tick (60)
                     
 #JOGO
 def game ():
     global score
+    #SCORE DO JOGADOR
     score = 0
-    
-
     #Variáveis para a função pulo:
     GRAVITY = 2
     JUMP_SIZE = 20
@@ -221,7 +231,7 @@ def game ():
     JUMPING = 1
     FALLING = 2
 
-#cRIA AS CLASSES QUE SERÃO UTILIZADAS NO JOGO
+#CRIA AS CLASSES QUE SERÃO UTILIZADAS NO JOGO
 
     #CLASSE DOS INIMIGOS
     class Bixo(pygame.sprite.Sprite):
@@ -241,11 +251,11 @@ def game ():
 
         #ATUALIZA A POSIÇÃO DOS BIXOS
         def update(self):
-            # Atualizando a posição do meteoro
+            # Atualizando a posição do bixo
             self.rect.x += self.speedx
             self.rect.y += self.speedy
 
-            #FAZ O MOVIMENTO DE SUBIR E DESCER
+            #FAZ O MOVIMENTO DE SUBIR E DESCER DOS BIXOS    
             if self.rect.top > 270:
                 self.speedy = random.randint(-3, -1)
             elif self.rect.bottom < 200:
