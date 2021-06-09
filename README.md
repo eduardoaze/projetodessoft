@@ -10,3 +10,5 @@ Depois de perder todas as suas vidas o jogador vai para a tela de gameover, onde
 Para a produção do jogo apenas a biblioteca pygame foi utilizada e precisa ser instalada previamente para rodar o jogo.
 
 O arquivo com a versão correta do jogo, funcionando 100%, se chama "versaofinal.py"
+
+Video do jogo: https://www.youtube.com/watch?v=fGc3QhEtq2M&ab_channel=HenriqueAlves
