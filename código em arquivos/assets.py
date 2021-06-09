@@ -1,7 +1,8 @@
 import pygame
+from pygame.locals import *
 from config import luigi_HEIGHT, luigi_WIDTH
 
-font = pygame.font.SysFont (None, 20)
+font = pygame.font.SysFont(None, 20)
 
 assets = {}
 assets['vida_perde'] = pygame.mixer.Sound('sons/Nope (Construction Worker TF2) - Gaming Sound Effect (HD) (1).wav')
